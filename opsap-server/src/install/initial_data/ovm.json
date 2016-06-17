@@ -1,0 +1,82 @@
+[
+  {
+    "model": "ovm.sheetfield",
+    "pk": 10001,
+    "fields": {
+      "field_name": "global",
+      "option": "env_type",
+      "option_display": "\u5b9a\u4e49:\u73af\u5883\u7c7b\u578b",
+      "sheet_name": "field"
+    }
+  },
+  {
+    "model": "ovm.sheetfield",
+    "pk": 10002,
+    "fields": {
+      "field_name": "global",
+      "option": "os_type",
+      "option_display": "\u5b9a\u4e49:\u7cfb\u7edf\u7c7b\u578b",
+      "sheet_name": "field"
+    }
+  },
+  {
+    "model": "ovm.sheetfield",
+    "pk": 10003,
+    "fields": {
+      "field_name": "os_type",
+      "option": "WIN",
+      "option_display": "Windows",
+      "sheet_name": "global"
+    }
+  },
+  {
+    "model": "ovm.sheetfield",
+    "pk": 10004,
+    "fields": {
+      "field_name": "os_type",
+      "option": "LUX",
+      "option_display": "Linux",
+      "sheet_name": "global"
+    }
+  },
+  {
+    "pk": 10005,
+    "model": "ovm.sheetfield",
+    "fields": {
+      "field_name": "os_type_WIN",
+      "option": "os_version",
+      "option_display": "\u5b9a\u4e49:Windows\u7248\u672c",
+      "sheet_name": "field"
+    }
+  },
+  {
+    "pk": 10006,
+    "model": "ovm.sheetfield",
+    "fields": {
+      "field_name": "os_type_LUX",
+      "option": "os_version",
+      "option_display": "\u5b9a\u4e49:Linux\u7248\u672c",
+      "sheet_name": "field"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "ovm.sheetfield",
+    "fields": {
+      "field_name": "env_type",
+      "option": "DEVP",
+      "option_display": "\u5f00\u53d1\u73af\u5883",
+      "sheet_name": "global"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "ovm.sheetfield",
+    "fields": {
+      "field_name": "env_type",
+      "option": "TEST",
+      "option_display": "\u6d4b\u8bd5\u73af\u5883",
+      "sheet_name": "global"
+    }
+  }
+]

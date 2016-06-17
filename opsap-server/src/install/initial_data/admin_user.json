@@ -1,0 +1,14 @@
+[
+  {
+    "model": "ouser.user",
+    "pk": 1,
+    "fields": {
+      "username": "admin",
+      "name": "admin",
+      "is_active": true,
+      "role": "SU",
+      "password": "pbkdf2_sha256$20000$MzfbL4W7NIbK$+2LuI8VITlmuzy3XmeGtxatxEDREQyiEmzVy4A8NxAg=",
+      "email": "admin@admin.org"
+    }
+  }
+]
