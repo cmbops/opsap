@@ -14,7 +14,7 @@ sys.path.append(BASE_DIR)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'opsap.settings'
 setup = django.setup()
 
-from ouser.user_api import db_add_user, get_object, User
+from ouser.user_api import get_object, ExUser
 from install import color_print
 from opsap.settings import FUNC_APPS
 
@@ -57,11 +57,11 @@ class Setup(object):
         call_command('migrate')
 
     def _create_admin(self):
-        user = get_object(User, username=self.admin_user)
+        user = get_object(ExUser, username=self.admin_user)
         if user:
             user.delete()
-        db_add_user(username=self.admin_user, password=self.admin_pass, role='SU', name='admin', groups='',
-                    admin_groups='', email=self.admin_email, is_active=True)
+        ExUser.objects.create_superuser(self.admin_user,email=self.admin_email,password=self.admin_pass,
+                                        name=u'超级管理员')
 
     def _db_initial_params(self):
         # call_command('loaddata', os.path.join(BASE_DIR, 'install/initial_data/ovm.json'))

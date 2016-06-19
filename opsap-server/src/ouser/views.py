@@ -28,7 +28,7 @@ def group_add(request):
     try:
         if not group_name:
             raise ServerError(u'组名 不能为空')
-        if UserGroup.objects.filter(name=group_name):
+        if ExGroup.objects.filter(name=group_name):
             raise ServerError(u'组名已存在')
         db_add_group(name=group_name, users_id=users_selected, comment=comment)
     except Exception, e:
@@ -52,7 +52,7 @@ def group_list(request):
     """
     keyword = request.GET.get('search', '')
     group_id = request.GET.get('id', '')
-    user_group_list = UserGroup.objects.all().order_by('name')
+    user_group_list = ExGroup.objects.all().order_by('name')
     many = True
 
     if keyword:
@@ -62,7 +62,7 @@ def group_list(request):
         many = False
         user_group_list = user_group_list.filter(id=int(group_id))
 
-    serializer = UserGroupSerializer(user_group_list, many=many)
+    serializer = ExGroupSerializer(user_group_list, many=many)
     return Response({"status": "success", "msg": "", "data": serializer.data})
 
 
@@ -78,7 +78,7 @@ def group_delete(request):
     """
     group_id_list = request.POST.getlist('id', '')
     for group_id in group_id_list:
-        UserGroup.objects.filter(id=group_id).delete()
+        ExGroup.objects.filter(id=group_id).delete()
     msg = u'删除组成功'
     return Response({"status": "success", "msg": msg, "data": {}})
 

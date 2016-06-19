@@ -2,7 +2,7 @@
 # Author: Dunkle Qiu
 from rest_framework import serializers
 
-from .models import User, ExGroup
+from .models import ExUser, ExGroup
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
     mana_group_set = serializers.SlugRelatedField('name', many=True, read_only=True)
 
     class Meta:
-        model = User
+        model = ExUser
         fields = ('id', 'username', 'name', 'role', 'last_login', 'groups', 'mana_group_set')
 
 
