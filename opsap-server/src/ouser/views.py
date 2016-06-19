@@ -1,17 +1,188 @@
 # coding: utf-8
+# Author: Dunkle Qiu
+
 from django.db.models import Q
-
-from ouser.user_api import *
-from .serializers import UserSerializer, ExGroupSerializer
-
-MAIL_FROM = EMAIL_HOST_USER
-
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
+from opsap.api import require_role, ServerError, permissions
+from ouser.user_api import *
+from .serializers import ExUserSerializer, ExGroupSerializer
+
 
 @api_view(['POST'])
-@permission_classes((require_role('super'),))
+@permission_classes((require_role('SU'),))
+def user_add(request):
+    """
+    添加用户
+
+    * 权限 - 超级管理员(SU)
+    * 参数
+    ** username - 用户名称
+    ** email - 邮箱地址
+    ** password - 密码
+    ** name - 显示名称
+    ** role - 角色(CU/GM/SN), SU只通过后台创建
+    """
+    username = request.POST.get('username', '')
+    email = request.POST.get('email', '')
+    password = request.POST.get('password', '')
+    name = request.POST.get('name', '')
+    role = request.POST.get('role', 'CU')
+    msg_prefix = u"添加用户 %s "
+    try:
+        if not (username and password and email):
+            raise ServerError(u'用户名/密码/邮箱 不能为空')
+        if ExUser.objects.filter(username=username):
+            raise ServerError(u'用户名已存在')
+        user = ExUser.objects.create_user(username, email, password, name, role)
+        serializer = ExUserSerializer(user)
+    except Exception, e:
+        msg = (msg_prefix % username) + u"失败, 错误信息: " + unicode(e)
+        return Response({"status": -1, "msg": msg, "data": {}})
+    else:
+        msg = (msg_prefix % username) + u"成功!"
+        return Response({"status": 1, "msg": msg, "data": serializer.data})
+
+
+@api_view(['GET'])
+@permission_classes((require_role('SU'),))
+def user_list(request):
+    """
+    获取用户列表
+
+    * 权限 - 超级管理员(SU)
+    """
+    msg_prefix = u"获取用户列表 "
+    try:
+        user_list = ExUser.objects.all()
+        serializer = ExUserSerializer(user_list, many=True)
+    except Exception, e:
+        msg = msg_prefix + u"失败, 错误信息: " + unicode(e)
+        return Response({"status": -1, "msg": msg, "data": {}})
+    else:
+        msg = msg_prefix + u"成功!"
+        return Response({"status": 0, "msg": msg, "data": serializer.data})
+
+
+@api_view(['GET','POST'])
+@permission_classes((permissions.IsAuthenticated,))
+def user_detail(request):
+    """
+    获取用户详情
+
+    * 权限 - 超级管理员(SU)
+    * 参数
+    ** username/id - 用户名称/用户id
+    """
+    user = request.user
+    msg_prefix = u"获取用户详情 "
+    try:
+        if request.method=='POST':
+            username = request.POST.get('username', '')
+            id = request.POST.get('id', '')
+            if username:
+                user = ExUser.objects.get(username=username)
+            elif id:
+                user = ExUser.objects.get(pk=int(id))
+        serializer = ExUserSerializer(user)
+    except Exception, e:
+        msg = msg_prefix + u"失败, 错误信息: " + unicode(e)
+        return Response({"status": -1, "msg": msg, "data": {}})
+    else:
+        msg = msg_prefix + u"成功!"
+        return Response({"status": 0, "msg": msg, "data": serializer.data})
+
+
+@api_view(['POST'])
+@permission_classes((require_role('CU'),))
+def user_edit(request):
+    """
+    修改用户信息
+
+    * 权限 - 超级管理员(SU)
+    * 参数
+    ** username/id - 用户名称/用户id
+    ** email - 邮箱地址
+    ** password - 密码
+    ** name - 显示名称
+    ** role - 角色(CU/GM/SN), SU只通过后台创建
+    """
+    username = request.POST.get('username', '')
+    id = request.POST.get('id', '')
+    email = request.POST.get('email', '')
+    password = request.POST.get('password', '')
+    name = request.POST.get('name', '')
+    role = request.POST.get('role', 'CU')
+    msg_prefix = u"修改用户信息 %s "
+    try:
+        if username:
+            user = ExUser.objects.get(username=username)
+        elif id:
+            user = ExUser.objects.get(pk=int(id))
+        else:
+            raise ServerError(u'用户名/用户id 至少提供一项')
+
+        req_user = request.user
+        if req_user.role!='SU' and req_user!=user:
+            return Response(status=403)
+
+        if email:
+            user.email = email
+        if role and req_user.role=='SU':
+            user.role = role
+            user.is_superuser = (role=='SU')
+            user.is_staff = (role=='SU')
+        if name:
+            user.name = name
+        if password:
+            user.set_password(password=password)
+        user.save()
+        serializer = ExUserSerializer(user)
+    except Exception, e:
+        msg = (msg_prefix % username) + u"失败, 错误信息: " + unicode(e)
+        return Response({"status": -1, "msg": msg, "data": {}})
+    else:
+        msg = (msg_prefix % username) + u"成功!"
+        return Response({"status": 1, "msg": msg, "data": serializer.data})
+
+
+@api_view(['POST'])
+@permission_classes((require_role('SU'),))
+def user_delete(request):
+    """
+    删除用户
+
+    * 权限 - 超级管理员(SU)
+    * 需同时提供用户名及id列表
+    * 参数
+    ** username - 用户名称(列表)
+    ** id - 用户id(列表)
+    """
+    username = request.POST.getlist('username', '')
+    id = request.POST.getlist('id', '')
+    msg_prefix = u"删除用户 "
+    delete_list = []
+    try:
+        for value in id:
+            user = ExUser.objects.get(pk=int(value))
+            if user.username in username:
+                delete_list.append({
+                    'id': value,
+                    'username': username,
+                    'role': user.role
+                })
+                user.delete()
+    except Exception, e:
+        msg = msg_prefix + u"失败, 错误信息: " + unicode(e)
+        return Response({"status": -1, "msg": msg, "data": {}})
+    else:
+        msg = msg_prefix + u"成功!"
+        return Response({"status": 1, "msg": msg, "data": delete_list})
+
+
+@api_view(['POST'])
+@permission_classes((require_role('SU'),))
 def group_add(request):
     """
     添加用户组
@@ -130,114 +301,7 @@ def group_delete(request):
 #
 #     return my_render('ouser/group_edit.html', locals(), request)
 #
-#
-# @require_role(role='super')
-# def user_add(request):
-#     error = ''
-#     msg = ''
-#     header_title, path1, path2 = '添加用户', '用户管理', '添加用户'
-#     user_role = {'SU': u'超级管理员', 'CU': u'普通用户'}
-#     group_all = UserGroup.objects.all()
-#
-#     if request.method == 'POST':
-#         username = request.POST.get('username', '')
-#         password = PyCrypt.gen_rand_pass(16)
-#         name = request.POST.get('name', '')
-#         email = request.POST.get('email', '')
-#         groups = request.POST.getlist('groups', [])
-#         admin_groups = request.POST.getlist('admin_groups', [])
-#         role = request.POST.get('role', 'CU')
-#         uuid_r = uuid.uuid4().get_hex()
-#         ssh_key_pwd = PyCrypt.gen_rand_pass(16)
-#         extra = request.POST.getlist('extra', [])
-#         is_active = False if '0' in extra else True
-#         ssh_key_login_need = True
-#         send_mail_need = True if '2' in extra else False
-#
-#         try:
-#             if '' in [username, password, ssh_key_pwd, name, role]:
-#                 error = u'带*内容不能为空'
-#                 raise ServerError
-#             check_user_is_exist = User.objects.filter(username=username)
-#             if check_user_is_exist:
-#                 error = u'用户 %s 已存在' % username
-#                 raise ServerError
-#
-#         except ServerError:
-#             pass
-#         else:
-#             try:
-#                 user = db_add_user(username=username, name=name,
-#                                    password=password,
-#                                    email=email, role=role, uuid=uuid_r,
-#                                    groups=groups, admin_groups=admin_groups,
-#                                    ssh_key_pwd=ssh_key_pwd,
-#                                    is_active=is_active,
-#                                    date_joined=datetime.datetime.now())
-#                 # server_add_user(username, password, ssh_key_pwd, ssh_key_login_need)
-#                 user = get_object(User, username=username)
-#                 if groups:
-#                     user_groups = []
-#                     for user_group_id in groups:
-#                         user_groups.extend(UserGroup.objects.filter(id=user_group_id))
-#
-#             except IndexError, e:
-#                 error = u'添加用户 %s 失败 %s ' % (username, e)
-#                 try:
-#                     db_del_user(username)
-#                     server_del_user(username)
-#                 except Exception:
-#                     pass
-#             else:
-#                 if MAIL_ENABLE and send_mail_need:
-#                     user_add_mail(user, kwargs=locals())
-#                 msg = get_display_msg(user, password, ssh_key_pwd, ssh_key_login_need, send_mail_need)
-#     return my_render('ouser/user_add.html', locals(), request)
-#
-#
-# @require_role(role='super')
-# def user_list(request):
-#     user_role = {'SU': u'超级管理员', 'GA': u'组管理员', 'CU': u'普通用户'}
-#     header_title, path1, path2 = '查看用户', '用户管理', '用户列表'
-#     keyword = request.GET.get('keyword', '')
-#     gid = request.GET.get('gid', '')
-#     users_list = User.objects.all().order_by('username')
-#
-#     if gid:
-#         user_group = UserGroup.objects.filter(id=gid)
-#         if user_group:
-#             user_group = user_group[0]
-#             users_list = user_group.user_set.all()
-#
-#     if keyword:
-#         users_list = users_list.filter(Q(username__icontains=keyword) | Q(name__icontains=keyword)).order_by('username')
-#
-#     users_list, p, users, page_range, current_page, show_first, show_end = pages(users_list, request)
-#
-#     return my_render('ouser/user_list.html', locals(), request)
-#
-#
-# @require_role(role='user')
-# def user_detail(request):
-#     header_title, path1, path2 = '用户详情', '用户管理', '用户详情'
-#     if request.session.get('role_id') == 0:
-#         user_id = request.user.id
-#     else:
-#         user_id = request.GET.get('id', '')
-#
-#     user = get_object(User, id=user_id)
-#     if not user:
-#         return HttpResponseRedirect(reverse('user_list'))
-#
-#     # user_perm_info = get_group_user_perm(user)
-#     # role_assets = user_perm_info.get('role')
-#     # user_log_ten = Log.objects.filter(user=user.username).order_by('id')[0:10]
-#     # user_log_last = Log.objects.filter(user=user.username).order_by('id')[0:50]
-#     # user_log_last_num = len(user_log_last)
-#
-#     return my_render('ouser/user_detail.html', locals(), request)
-#
-#
+
 # @require_role(role='admin')
 # def user_del(request):
 #     if request.method == "GET":

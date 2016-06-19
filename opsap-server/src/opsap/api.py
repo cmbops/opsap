@@ -182,58 +182,6 @@ def get_object(model, **kwargs):
     return the_object
 
 
-def get_options(app, name):
-    """
-    根据应用名、表单名获取动态表单选项
-    """
-    return ParaOption.objects.filter(setting_type='option', app=app, name=name)
-
-
-def add_option(app, name, value, display='', **ext_attr):
-    """
-    在指定的表单下，添加选项，如果已存在则更新选项
-    """
-    defaut_dict = {}
-    if display:
-        defaut_dict['display'] = display
-    if ext_attr:
-
-        defaut_dict['ext_attr'] = json.dumps(ext_attr)
-    return ParaOption.objects.update_or_create(defaults=defaut_dict, setting_type='option', app=app, name=name,
-                                               value=value)
-
-
-def modify_option(app, name, value, display='', ext_attr=None):
-    """
-    修改指定的表单选项
-    注：value不可修改，只支持增删
-    """
-    modify = False
-    try:
-        obj = ParaOption.objects.get(setting_type='option', app=app, name=name, value=value)
-        if display:
-            modify = True
-            obj.display = display
-        if ext_attr and isinstance(ext_attr, dict):
-            modify = True
-            obj.ext_attr = json.dumps(ext_attr)
-        if modify:
-            obj.save()
-        return modify
-    except:
-        return False
-
-
-def delete_options(app, name, values):
-    """
-    删除指定的动态表单选项
-    """
-    if isinstance(values, str):
-        ParaOption.objects.filter(setting_type='option', app=app, name=name, value=values).delete()
-    elif isinstance(values, list):
-        ParaOption.objects.filter(setting_type='option', app=app, name=name, value__in=values).delete()
-
-
 def get_param(app, name, default_value=''):
     """
     根据应用名、参数名获取参数, 如获取失败，自动添加由default_value指定的参数项

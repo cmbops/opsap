@@ -73,6 +73,7 @@ def option_list(request):
         msg = (msg_prefix % name) + u"成功!"
         return Response({"status": 0, "msg": msg, "data": data})
 
+
 @api_view(['POST'])
 @permission_classes((require_role('SU'),))
 def option_edit(request):
