@@ -65,7 +65,7 @@ def user_list(request):
         return Response({"status": 0, "msg": msg, "data": serializer.data})
 
 
-@api_view(['GET','POST'])
+@api_view(['GET', 'POST'])
 @permission_classes((permissions.IsAuthenticated,))
 def user_detail(request):
     """
@@ -78,7 +78,7 @@ def user_detail(request):
     user = request.user
     msg_prefix = u"获取用户详情 "
     try:
-        if request.method=='POST':
+        if request.method == 'POST':
             username = request.POST.get('username', '')
             id = request.POST.get('id', '')
             if username:
@@ -124,15 +124,15 @@ def user_edit(request):
             raise ServerError(u'用户名/用户id 至少提供一项')
 
         req_user = request.user
-        if req_user.role!='SU' and req_user!=user:
+        if req_user.role != 'SU' and req_user != user:
             return Response(status=403)
 
         if email:
             user.email = email
-        if role and req_user.role=='SU':
+        if role and req_user.role == 'SU':
             user.role = role
-            user.is_superuser = (role=='SU')
-            user.is_staff = (role=='SU')
+            user.is_superuser = (role == 'SU')
+            user.is_staff = (role == 'SU')
         if name:
             user.name = name
         if password:
@@ -165,6 +165,8 @@ def user_delete(request):
     delete_list = []
     try:
         for value in id:
+            if value==request.user.id:
+                continue
             user = ExUser.objects.get(pk=int(value))
             if user.username in username:
                 delete_list.append({
@@ -211,7 +213,7 @@ def group_add(request):
 
 
 @api_view(['GET'])
-@permission_classes((require_role('super'),))
+@permission_classes((require_role('SU'),))
 def group_list(request):
     """
     用户组列表
