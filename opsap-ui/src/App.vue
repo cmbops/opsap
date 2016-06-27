@@ -1,20 +1,9 @@
 <template>
   <div id="app">
-    <img class="logo" src="./assets/logo.png">
-    <login></login>
-    <index></index>
+    <router-view></router-view>
   </div>
 </template>
 
-<script>
-import login from './components/login'
-
-export default {
-  components: {
-    login
-  }
-}
-</script>
 
 <style>
 html {

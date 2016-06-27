@@ -1,32 +1,43 @@
 <template>
   <div class="hello">
-    <h2 v-if="state">{{msg}}</h2>
+    <img class="logo" src="../assets/logo.png">
+    <h2 v-if="state">华商自动化运维平台</h2>
             <form class="m-t" role="form" method="post" action="">
                 <div class="form-group">
-                    <input type="text" v-model="username" class="form-control" placeholder="Username" required="length[6~50]">
+                    <input type="text" v-model="credentials.username"  class="form-control" placeholder="Username" required="length[6~50]">
                 </div>
                 <div class="form-group">
-                    <input type="password" v-model="password" class="form-control" placeholder="Password" required="">
+                    <input type="password" v-model="credentials.password" class="form-control" placeholder="Password" required="">
                 </div>
-                <button type="submit" class="btn btn-success block full-width m-b">Login</button>
-
+                <button @click="submit" class="btn btn-success block full-width m-b">Login</button>
+                
             </form>
+            <div class="alert alert-danger" v-if="error">{{error}}</div>
             <p class="m-t"> <small><b>Copyright</b> CMB DevOps team © 2016-2016</small> </p>
   </div>
 </template>
 
 <script>
+import auth from '../auth'
 // 登录页面组件
 export default {
   data () {
-    let title = '华商自动化运维平台'
+    console.log(auth.user.authoenticated)
     return {
-      // note: changing this line won't causes changes
-      // with hot-reload because the reloaded component
-      // preserves its current state and we are modifying
-      // its initial state.
-      msg: title,
-      state: true
+      credentials: {
+        username: '',
+        password: ''
+      },
+      error: ''
+    }
+  },
+  methods: {
+    submit () {
+      var credentials = {
+        username: this.credentials.username,
+        password: this.credentials.password
+      }
+      auth.login(this, credentials, 'index')
     }
   }
 }
