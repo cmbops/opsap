@@ -2,20 +2,20 @@
 # Author: Dunkle Qiu
 from rest_framework import serializers
 
-from .models import User, ExGroup
+from .models import ExUser, ExGroup
 
 
-class UserSerializer(serializers.ModelSerializer):
+class ExUserSerializer(serializers.ModelSerializer):
     groups = serializers.SlugRelatedField('name', many=True, read_only=True)
     mana_group_set = serializers.SlugRelatedField('name', many=True, read_only=True)
 
     class Meta:
-        model = User
+        model = ExUser
         fields = ('id', 'username', 'name', 'role', 'last_login', 'groups', 'mana_group_set')
 
 
 class ExGroupSerializer(serializers.ModelSerializer):
-    user_set = UserSerializer(many=True, read_only=True)
+    user_set = ExUserSerializer(many=True, read_only=True)
     managers = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:

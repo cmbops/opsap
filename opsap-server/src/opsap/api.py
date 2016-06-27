@@ -8,9 +8,9 @@ import subprocess
 import uuid
 from binascii import b2a_hex, a2b_hex
 
-import crypt
+#import crypt
 import pwd
-from Crypto.Cipher import AES
+#from Crypto.Cipher import AES
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.core.urlresolvers import reverse
@@ -19,7 +19,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from rest_framework import permissions
 
-from ouser.models import User
+from ouser.models import ExUser,Group
 from .models import *
 from .settings import *
 
@@ -72,132 +72,89 @@ def set_log(level, filename='opsap.log'):
 logger = set_log(LOG_LEVEL)
 
 
-def list_drop_str(a_list, a_str):
-    for i in a_list:
-        if i == a_str:
-            a_list.remove(a_str)
-    return a_list
-
-
-def page_list_return(total, current=1):
-    """
-    page
-    分页，返回本次分页的最小页数到最大页数列表
-    """
-    min_page = current - 2 if current - 4 > 0 else 1
-    max_page = min_page + 4 if min_page + 4 < total else total
-
-    return range(min_page, max_page + 1)
-
-
-def pages(post_objects, request):
-    """
-    page public function , return page's object tuple
-    分页公用函数，返回分页的对象元组
-    """
-    paginator = Paginator(post_objects, 10)
-    try:
-        current_page = int(request.GET.get('page', '1'))
-    except ValueError:
-        current_page = 1
-
-    page_range = page_list_return(len(paginator.page_range), current_page)
-
-    try:
-        page_objects = paginator.page(current_page)
-    except (EmptyPage, InvalidPage):
-        page_objects = paginator.page(paginator.num_pages)
-
-    if current_page >= 5:
-        show_first = 1
-    else:
-        show_first = 0
-
-    if current_page <= (len(paginator.page_range) - 3):
-        show_end = 1
-    else:
-        show_end = 0
-
-    # 所有对象， 分页器， 本页对象， 所有页码， 本页页码，是否显示第一页，是否显示最后一页
-    return post_objects, paginator, page_objects, page_range, current_page, show_first, show_end
-
-
-class PyCrypt(object):
-    """
-    This class used to encrypt and decrypt password.
-    加密类
-    """
-
-    def __init__(self, key):
-        self.key = key
-        self.mode = AES.MODE_CBC
-
-    @staticmethod
-    def gen_rand_pass(length=16, especial=False):
-        """
-        random password
-        随机生成密码
-        """
-        salt_key = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_'
-        symbol = '!@$%^&*()_'
-        salt_list = []
-        if especial:
-            for i in range(length - 4):
-                salt_list.append(random.choice(salt_key))
-            for i in range(4):
-                salt_list.append(random.choice(symbol))
-        else:
-            for i in range(length):
-                salt_list.append(random.choice(salt_key))
-        salt = ''.join(salt_list)
-        return salt
-
-    @staticmethod
-    def md5_crypt(string):
-        """
-        md5 encrypt method
-        md5非对称加密方法
-        """
-        return hashlib.new("md5", string).hexdigest()
-
-    @staticmethod
-    def gen_sha512(salt, password):
-        """
-        generate sha512 format password
-        生成sha512加密密码
-        """
-        return crypt.crypt(password, '$6$%s$' % salt)
-
-    def encrypt(self, passwd=None, length=32):
-        """
-        encrypt gen password
-        对称加密之加密生成密码
-        """
-        if not passwd:
-            passwd = self.gen_rand_pass()
-
-        cryptor = AES.new(self.key, self.mode, b'8122ca7d906ad5e1')
-        try:
-            count = len(passwd)
-        except TypeError:
-            raise ServerError('Encrypt password error, TYpe error.')
-
-        add = (length - (count % length))
-        passwd += ('\0' * add)
-        cipher_text = cryptor.encrypt(passwd)
-        return b2a_hex(cipher_text)
-
-    def decrypt(self, text):
-        """
-        decrypt pass base the same key
-        对称加密之解密，同一个加密随机数
-        """
-        cryptor = AES.new(self.key, self.mode, b'8122ca7d906ad5e1')
-        try:
-            plain_text = cryptor.decrypt(a2b_hex(text))
-        except TypeError:
-            raise ServerError('Decrypt password error, TYpe error.')
-        return plain_text.rstrip('\0')
+# def list_drop_str(a_list, a_str):
+#     for i in a_list:
+#         if i == a_str:
+#             a_list.remove(a_str)
+#     return a_list
+#
+#
+# class PyCrypt(object):
+#     """
+#     This class used to encrypt and decrypt password.
+#     加密类
+#     """
+#
+#     def __init__(self, key):
+#         self.key = key
+#         self.mode = AES.MODE_CBC
+#
+#     @staticmethod
+#     def gen_rand_pass(length=16, especial=False):
+#         """
+#         random password
+#         随机生成密码
+#         """
+#         salt_key = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_'
+#         symbol = '!@$%^&*()_'
+#         salt_list = []
+#         if especial:
+#             for i in range(length - 4):
+#                 salt_list.append(random.choice(salt_key))
+#             for i in range(4):
+#                 salt_list.append(random.choice(symbol))
+#         else:
+#             for i in range(length):
+#                 salt_list.append(random.choice(salt_key))
+#         salt = ''.join(salt_list)
+#         return salt
+#
+#     @staticmethod
+#     def md5_crypt(string):
+#         """
+#         md5 encrypt method
+#         md5非对称加密方法
+#         """
+#         return hashlib.new("md5", string).hexdigest()
+#
+#     @staticmethod
+#     def gen_sha512(salt, password):
+#         """
+#         generate sha512 format password
+#         生成sha512加密密码
+#         """
+#         return crypt.crypt(password, '$6$%s$' % salt)
+#
+#     def encrypt(self, passwd=None, length=32):
+#         """
+#         encrypt gen password
+#         对称加密之加密生成密码
+#         """
+#         if not passwd:
+#             passwd = self.gen_rand_pass()
+#
+#         cryptor = AES.new(self.key, self.mode, b'8122ca7d906ad5e1')
+#         try:
+#             count = len(passwd)
+#         except TypeError:
+#             raise ServerError('Encrypt password error, TYpe error.')
+#
+#         add = (length - (count % length))
+#         passwd += ('\0' * add)
+#         cipher_text = cryptor.encrypt(passwd)
+#         return b2a_hex(cipher_text)
+#
+#     def decrypt(self, text):
+#         """
+#         decrypt pass base the same key
+#         对称加密之解密，同一个加密随机数
+#         """
+#         cryptor = AES.new(self.key, self.mode, b'8122ca7d906ad5e1')
+#         try:
+#             plain_text = cryptor.decrypt(a2b_hex(text))
+#         except TypeError:
+#             raise ServerError('Decrypt password error, TYpe error.')
+#         return plain_text.rstrip('\0')
 
 
 class ServerError(Exception):
@@ -223,57 +180,6 @@ def get_object(model, **kwargs):
     else:
         the_object = None
     return the_object
-
-
-def get_options(app, name):
-    """
-    根据应用名、表单名获取动态表单选项
-    """
-    return ParaOption.objects.filter(setting_type='option', app=app, name=name)
-
-
-def add_option(app, name, value, display='', ext_attr=None):
-    """
-    在指定的表单下，添加选项，如果已存在则更新选项
-    """
-    defaut_dict = {}
-    if display:
-        defaut_dict['display'] = display
-    if ext_attr and isinstance(ext_attr, dict):
-        defaut_dict['ext_attr'] = json.dumps(ext_attr)
-    return ParaOption.objects.update_or_create(defaults=defaut_dict, setting_type='option', app=app, name=name,
-                                               value=value)
-
-
-def modify_option(app, name, value, display='', ext_attr=None):
-    """
-    修改指定的表单选项
-    注：value不可修改，只支持增删
-    """
-    modify = False
-    try:
-        obj = ParaOption.objects.get(setting_type='option', app=app, name=name, value=value)
-        if display:
-            modify = True
-            obj.display = display
-        if ext_attr and isinstance(ext_attr, dict):
-            modify = True
-            obj.ext_attr = json.dumps(ext_attr)
-        if modify:
-            obj.save()
-        return modify
-    except:
-        return False
-
-
-def delete_options(app, name, values):
-    """
-    删除指定的动态表单选项
-    """
-    if isinstance(values, str):
-        ParaOption.objects.filter(setting_type='option', app=app, name=name, value=values).delete()
-    elif isinstance(values, list):
-        ParaOption.objects.filter(setting_type='option', app=app, name=name, value__in=values).delete()
 
 
 def get_param(app, name, default_value=''):
@@ -302,25 +208,58 @@ def set_param(app, name, value, display='', ext_attr=None):
     return ParaOption.objects.update_or_create(defaults=defaut_dict, setting_type='param', app=app, name=name)
 
 
-def require_role(role='user'):
+def require_role(role='CU'):
     """
-    验证用户是某种角色 ["super", "admin", "user"]的函数
+    验证用户是某种角色 ['SU','GM','CU','SN']的函数
     """
-    role_all = {'user': 'CU', 'admin': 'GA', 'super': 'SU'}
-
     class RoleAuthenticated(permissions.IsAuthenticated):
-        message = "Permission denied, role of %s or above is required" % role_all[role]
+        message = "Permission denied, role of %s or above is required" % role
 
         def has_permission(self, request, view):
-            permitted = super(RoleAuthenticated,self).has_permission(request, view)
-            if role == 'super':
-                return permitted and request.user.role == 'SU'
-            elif role == 'admin':
-                return permitted and request.user.role in ['SU', 'GA']
+            is_auth = super(RoleAuthenticated,self).has_permission(request, view)
+            if not is_auth:
+                return False
+            user_role = request.user.role
+            if user_role=='SU':
+                return True
+            elif role in ['SN','GM']:
+                return user_role==role
+            elif role=='CU':
+                return user_role in ['GM','CU']
             else:
-                return permitted
+                return False
 
     return RoleAuthenticated
+
+def require_groups(groups=None):
+    """
+    验证用户属于某个群组
+    """
+    if not groups:
+        return permissions.IsAuthenticated
+    if isinstance(groups, str):
+        groups = [groups]
+    assert type(groups) in (tuple, list), "Type Error: groups must be a tuple or a list."
+
+    class GroupAuthenticated(permissions.IsAuthenticated):
+        message = "Permission denied, only members in \"%s\" is permitted" % ("".join(groups))
+
+        def has_permission(self, request, view):
+            is_auth = super(GroupAuthenticated,self).has_permission(request, view)
+            if not is_auth:
+                return False
+            group_set = Group.objects.filter(name__in=groups)
+            if group_set.exists():
+                for group in  request.user.groups:
+                    if group in group_set:
+                        return True
+                return False
+            else:
+                return False
+
+    return GroupAuthenticated
+
+
 
 
 # def require_role(role='user'):
@@ -348,50 +287,26 @@ def require_role(role='user'):
 #
 #     return _deco
 
-
-def is_role_request(request, role='user'):
-    """
-    require this request of user is right
-    要求请求角色正确
-    """
-    role_all = {'user': 'CU', 'admin': 'GA', 'super': 'SU'}
-    if request.user.role == role_all.get(role, 'CU'):
-        return True
-    else:
-        return False
-
-
-# require_role
-def get_session_user_info(request):
-    """
-    get the user info of the user in session, for example id, username etc.
-    获取用户的信息
-    """
-    return [request.user.id, request.user.username, request.user]
-
-
-def get_user_dept(request):
-    """
-    get the user dept id
-    获取用户的部门id
-    """
-    user_id = request.user.id
-    if user_id:
-        user_dept = User.objects.get(id=user_id).dept
-        return user_dept.id
-
-
-def view_splitter(request, su=None, adm=None):
-    """
-    for different user use different view
-    视图分页器
-    """
-    if is_role_request(request, 'super'):
-        return su(request)
-    elif is_role_request(request, 'admin'):
-        return adm(request)
-    else:
-        return HttpResponseRedirect(reverse('login'))
+#
+# def is_role_request(request, role='user'):
+#     """
+#     require this request of user is right
+#     要求请求角色正确
+#     """
+#     role_all = {'user': 'CU', 'admin': 'GA', 'super': 'SU'}
+#     if request.user.role == role_all.get(role, 'CU'):
+#         return True
+#     else:
+#         return False
+#
+#
+# # require_role
+# def get_session_user_info(request):
+#     """
+#     get the user info of the user in session, for example id, username etc.
+#     获取用户的信息
+#     """
+#     return [request.user.id, request.user.username, request.user]
 
 
 def bash(cmd):
@@ -402,32 +317,20 @@ def bash(cmd):
     return subprocess.call(cmd, shell=True)
 
 
-def http_success(request, msg):
-    return render_to_response('success.html', locals())
+
+# def defend_attack(func):
+#     def _deco(request, *args, **kwargs):
+#         if int(request.session.get('visit', 1)) > 10:
+#             logger.debug('请求次数: %s' % request.session.get('visit', 1))
+#             return HttpResponse('Forbidden', status=403)
+#         request.session['visit'] = request.session.get('visit', 1) + 1
+#         request.session.set_expiry(300)
+#         return func(request, *args, **kwargs)
+#
+#     return _deco
 
 
-def http_error(request, emg):
-    message = emg
-    return render_to_response('error.html', locals())
-
-
-def my_render(template, data, request):
-    return render_to_response(template, data, context_instance=RequestContext(request))
-
-
-def defend_attack(func):
-    def _deco(request, *args, **kwargs):
-        if int(request.session.get('visit', 1)) > 10:
-            logger.debug('请求次数: %s' % request.session.get('visit', 1))
-            return HttpResponse('Forbidden', status=403)
-        request.session['visit'] = request.session.get('visit', 1) + 1
-        request.session.set_expiry(300)
-        return func(request, *args, **kwargs)
-
-    return _deco
-
-
-def get_mac_address():
-    node = uuid.getnode()
-    mac = uuid.UUID(int=node).hex[-12:]
-    return mac
+# def get_mac_address():
+#     node = uuid.getnode()
+#     mac = uuid.UUID(int=node).hex[-12:]
+#     return mac

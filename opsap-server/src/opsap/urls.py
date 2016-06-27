@@ -13,12 +13,18 @@ Including another URLconf
     1. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import include, url
-from django.contrib import admin
 from rest_framework.authtoken.views import obtain_auth_token
 
+from . import views
+
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
     url(r'^api-token-auth/', obtain_auth_token),
+    url(r'^options/', include([
+        url(r'^add/$', views.option_add),
+        url(r'^list/$', views.option_list),
+        url(r'^edit/$', views.option_edit),
+        url(r'^delete/$', views.option_delete),
+    ])),
     url(r'^ouser/', include('ouser.urls')),
     # url(r'^odata/', include('odata.urls')),
     # url(r'^ovm/', include('ovm.urls')),

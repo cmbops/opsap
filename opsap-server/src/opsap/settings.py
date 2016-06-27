@@ -28,7 +28,7 @@ DB_PORT = config.getint('db', 'port')
 DB_DATABASE = config.get('db', 'database')
 DB_USER = config.get('db', 'user')
 DB_PASSWORD = config.get('db', 'password')
-AUTH_USER_MODEL = 'ouser.User'
+AUTH_USER_MODEL = 'ouser.ExUser'
 # Mail config
 EMAIL_ENABLE = config.get('mail', 'mail_enable')
 EMAIL_HOST = config.get('mail', 'email_host')
