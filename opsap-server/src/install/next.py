@@ -14,7 +14,7 @@ sys.path.append(BASE_DIR)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'opsap.settings'
 setup = django.setup()
 
-from ouser.user_api import get_object, ExUser
+from ouser.models import ExUser
 from install import color_print
 from opsap.settings import FUNC_APPS
 
@@ -57,9 +57,6 @@ class Setup(object):
         call_command('migrate')
 
     def _create_admin(self):
-        user = get_object(ExUser, username=self.admin_user)
-        if user:
-            user.delete()
         ExUser.objects.create_superuser(self.admin_user,email=self.admin_email,password=self.admin_pass,
                                         name=u'超级管理员')
 

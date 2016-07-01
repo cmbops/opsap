@@ -39,6 +39,8 @@ EMAIL_TIMEOUT = 5
 # Log config
 LOG_DIR = os.path.join(BASE_DIR, 'logs')
 LOG_LEVEL = config.get('base', 'log')
+# Auth config
+TOKEN_TMOUT = -1
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -127,8 +129,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
     )
 }
 
