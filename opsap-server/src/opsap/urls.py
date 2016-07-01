@@ -18,7 +18,12 @@ from rest_framework.authtoken.views import obtain_auth_token
 from . import views
 
 urlpatterns = [
-    url(r'^api-token-auth/', obtain_auth_token),
+    # url(r'^api-token-auth/', obtain_auth_token),
+    url(r'^api-token-auth/', views.ObtainExAuthToken.as_view()),
+    url(r'^param/', include([
+        url(r'^set/$', views.param_set),
+        url(r'^get/$', views.param_get),
+    ])),
     url(r'^options/', include([
         url(r'^add/$', views.option_add),
         url(r'^list/$', views.option_list),
