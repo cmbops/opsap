@@ -1,8 +1,10 @@
 # coding: utf-8
+# Author: Dunkle Qiu
 
-from django.contrib.auth.models import AbstractUser, Group,UserManager
+from django.contrib.auth.models import AbstractUser, Group, UserManager
 from django.db import models
 from django.utils import timezone
+
 
 class ExGroup(Group):
     """
@@ -18,10 +20,12 @@ class ExGroup(Group):
 
 
 class ExUserManager(UserManager):
+    """
+    自定义用户管理器
+    """
     use_in_migrations = True
 
-    def _create_exuser(self, username, email, password, name, role,
-                     is_staff, is_superuser, **extra_fields):
+    def _create_exuser(self, username, email, password, name, role, is_staff, is_superuser, **extra_fields):
         """
         Creates and saves a User with the given username, email and password.
         """
@@ -40,15 +44,14 @@ class ExUserManager(UserManager):
     def create_user(self, username, email=None, password=None, name='', role='CU', **extra_fields):
         if not name:
             name = username
-        return self._create_exuser(username, email, password, name, role , False, False,
-                                 **extra_fields)
+        return self._create_exuser(username, email, password, name, role, False, False,
+                                   **extra_fields)
 
     def create_superuser(self, username, email, password, name='', **extra_fields):
         if not name:
             name = username
-        return self._create_exuser(username, email, password, name,'SU', True, True,
-                                 **extra_fields)
-
+        return self._create_exuser(username, email, password, name, 'SU', True, True,
+                                   **extra_fields)
 
 
 class ExUser(AbstractUser):

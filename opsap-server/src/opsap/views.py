@@ -7,11 +7,12 @@ from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.authtoken.views import Token, ObtainAuthToken
 
-from .models import DataDict
 from ouser.permissions import *
-from .utils.decorators import post_validated_fields, status, post_data_to_dict
-from .utils.base import logger
-from .settings import TOKEN_TMOUT
+from opsap.utils.decorators import post_validated_fields, status, post_data_to_dict
+from opsap.utils.base import logger
+from opsap.settings import TOKEN_TMOUT
+
+from opsap.models import DataDict
 
 
 class ObtainExAuthToken(ObtainAuthToken):
@@ -20,7 +21,7 @@ class ObtainExAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        if not created and TOKEN_TMOUT>0:
+        if not created and TOKEN_TMOUT > 0:
             token_life = timezone.now() - token.created
             if token_life.total_seconds() > TOKEN_TMOUT:
                 token.delete()
@@ -45,6 +46,7 @@ def param_set(request):
     """
     msg_prefix = u"设置参数 <%s>:<%s> "
     req_dict = post_data_to_dict(request.data)
+
     app = req_dict.pop('app')
     name = req_dict.pop('name')
     value = req_dict.pop('value')

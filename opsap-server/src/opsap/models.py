@@ -1,10 +1,8 @@
 # coding: utf-8
 # Author: Dunkle Qiu
 
-import copy
-
 from django.db import models
-from .utils.fields import JsonField, logger
+from .utils.fields import JsonField
 
 
 class ParamManager(models.Manager):

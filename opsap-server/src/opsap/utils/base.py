@@ -1,16 +1,15 @@
 # coding: utf-8
 # Author: Dunkle Qiu
 
-import pwd
 import logging
 import subprocess
 from opsap.settings import *
 from django.http import QueryDict
 from rest_framework.parsers import DataAndFiles
 
+
 def set_log(level, filename='opsap.log'):
     """
-    return a log file object
     根据提示设置log打印
     """
     if not os.path.isdir(LOG_DIR):
@@ -34,31 +33,18 @@ def set_log(level, filename='opsap.log'):
 logger = set_log(LOG_LEVEL)
 
 
-def get_object(model, **kwargs):
-    """
-    使用改封装函数查询数据库
-    """
-    for value in kwargs.values():
-        if not value:
-            return None
-
-    the_object = model.objects.filter(**kwargs)
-    if len(the_object) == 1:
-        the_object = the_object[0]
-    else:
-        the_object = None
-    return the_object
-
-
 def bash(cmd):
     """
-    run a bash shell command
     执行bash命令
     """
     return subprocess.call(cmd, shell=True)
 
 
+# 请求处理
 def post_data_to_dict(data):
+    """
+    将request.data类型统一为dict
+    """
     if isinstance(data, QueryDict):
         return data.dict()
     elif isinstance(data, DataAndFiles):
