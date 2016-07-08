@@ -9,7 +9,7 @@ from rest_framework.authtoken.views import Token, ObtainAuthToken
 
 from ouser.permissions import *
 from opsap.utils.decorators import post_validated_fields, status, post_data_to_dict
-from opsap.utils.base import logger,split
+from opsap.utils.base import logger, split
 from opsap.settings import TOKEN_TMOUT
 
 from opsap.models import DataDict
@@ -30,7 +30,7 @@ class ObtainExAuthToken(ObtainAuthToken):
 
 
 @api_view(['POST'])
-@permission_classes((require_role('SU'),))
+@permission_classes((require_role(ROLES.SU[0]),))
 @post_validated_fields(require=['app', 'name', 'value'])
 def param_set(request):
     """
@@ -99,7 +99,7 @@ def param_get(request):
 
 
 @api_view(['POST'])
-@permission_classes((require_role('SU'),))
+@permission_classes((require_role(ROLES.SU[0]),))
 @post_validated_fields(require=['app', 'name', 'value'], illegal=['options'])
 def option_add(request):
     """
@@ -161,7 +161,7 @@ def option_list(request):
 
 
 @api_view(['POST'])
-@permission_classes((require_role('SU'),))
+@permission_classes((require_role(ROLES.SU[0]),))
 @post_validated_fields(require=['app', 'name', 'value'], illegal=['options'])
 def option_edit(request):
     """
@@ -195,7 +195,7 @@ def option_edit(request):
 
 
 @api_view(['POST'])
-@permission_classes((require_role('SU'),))
+@permission_classes((require_role(ROLES.SU[0]),))
 @post_validated_fields(require=['app', 'name', 'value'])
 def option_delete(request):
     """

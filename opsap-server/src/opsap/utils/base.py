@@ -8,9 +8,22 @@ from django.http import QueryDict
 from rest_framework.parsers import DataAndFiles
 
 
+# 定义全局常量
+class ROLES(object):
+    """用户角色"""
+    SU = ('SU', 'SuperUser')
+    GM = ('GM', 'GroupManager')
+    CU = ('CU', 'CommonUser')
+    SN = ('SN', 'ServiceNode')
+
+    @classmethod
+    def as_choice(cls):
+        return cls.SU, cls.GM, cls.CU, cls.SN,
+
+
 # 基础处理函数
 def split(str_li, sep=','):
-    if not (isinstance(sep, str) and len(sep)==1):
+    if not (isinstance(sep, str) and len(sep) == 1):
         raise TypeError("Sep should be a simple char such as ','")
     if not str_li:
         return []

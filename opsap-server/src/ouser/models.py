@@ -5,6 +5,8 @@ from django.contrib.auth.models import AbstractUser, Group, UserManager
 from django.db import models
 from django.utils import timezone
 
+from opsap.utils.base import ROLES
+
 
 class ExGroup(Group):
     """
@@ -58,14 +60,8 @@ class ExUser(AbstractUser):
     """
     自定义用户模型
     """
-    USER_ROLE_CHOICES = (
-        ('SU', 'SuperUser'),
-        ('GM', 'GroupManager'),
-        ('CU', 'CommonUser'),
-        ('SN', 'ServiceNode')
-    )
     name = models.CharField(max_length=80)
-    role = models.CharField(max_length=2, choices=USER_ROLE_CHOICES, default='CU')
+    role = models.CharField(max_length=2, choices=ROLES.as_choice(), default='CU')
     ssh_key_str = models.TextField(null=True)
     ssh_key_pwd = models.CharField(max_length=200, null=True)
 

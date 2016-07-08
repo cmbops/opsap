@@ -15,7 +15,7 @@ from ouser.utils import *
 
 
 @api_view(['POST'])
-@permission_classes((require_role('SU'),))
+@permission_classes((require_role(ROLES.SU[0]),))
 @post_validated_fields(require=['username', 'email', 'password'])
 def user_add(request):
     """
@@ -53,7 +53,7 @@ def user_add(request):
 
 
 @api_view(['GET', 'POST'])
-@permission_classes((require_role('GA'),))
+@permission_classes((require_role(ROLES.GM[0]),))
 def user_list(request):
     """
     获取用户列表
@@ -133,7 +133,7 @@ def user_detail(request):
 
 
 @api_view(['POST'])
-@permission_classes((require_role('CU'),))
+@permission_classes((require_role(ROLES.CU[0]),))
 @post_validated_fields(require_one=['username', 'id'])
 def user_edit(request):
     """
@@ -190,7 +190,7 @@ def user_edit(request):
 
 
 @api_view(['POST'])
-@permission_classes((require_role('SU'),))
+@permission_classes((require_role(ROLES.SU[0]),))
 @post_validated_fields(require=['username', 'id'])
 def user_delete(request):
     """
@@ -225,7 +225,7 @@ def user_delete(request):
 
 
 @api_view(['POST'])
-@permission_classes((require_role('SU'),))
+@permission_classes((require_role(ROLES.SU[0]),))
 @post_validated_fields(require=['name'])
 def group_add(request):
     """
@@ -265,7 +265,7 @@ def group_add(request):
 
 
 @api_view(['GET', 'POST'])
-@permission_classes((require_role('GA'),))
+@permission_classes((require_role(ROLES.GM[0]),))
 def group_list(request):
     """
     用户组列表
@@ -301,7 +301,7 @@ def group_list(request):
 
 
 @api_view(['POST'])
-@permission_classes((require_role('SU'),))
+@permission_classes((require_role(ROLES.SU[0]),))
 @post_validated_fields(require_one=['name', 'id'])
 def group_edit(request):
     """
@@ -361,7 +361,7 @@ def group_edit(request):
 
 
 @api_view(['POST'])
-@permission_classes((require_role('SU'),))
+@permission_classes((require_role(ROLES.SU[0]),))
 @post_validated_fields(require=['name', 'id'])
 def group_delete(request):
     """

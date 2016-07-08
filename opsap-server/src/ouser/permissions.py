@@ -1,11 +1,11 @@
 # coding: utf-8
 # Author: Dunkle Qiu
 
-from .models import Group
+from .models import Group, ROLES
 from rest_framework import permissions
 
 
-def require_role(role='CU'):
+def require_role(role=ROLES.CU[0]):
     """
     验证用户是某种角色 ['SU','GM','CU','SN']的函数
     """
