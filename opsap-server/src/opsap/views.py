@@ -9,7 +9,7 @@ from rest_framework.authtoken.views import Token, ObtainAuthToken
 
 from ouser.permissions import *
 from opsap.utils.decorators import post_validated_fields, status, post_data_to_dict
-from opsap.utils.base import logger
+from opsap.utils.base import logger,split
 from opsap.settings import TOKEN_TMOUT
 
 from opsap.models import DataDict
@@ -212,7 +212,7 @@ def option_delete(request):
 
     app = req_dict.pop('app')
     name = req_dict.pop('name')
-    value = req_dict.pop('value').split(',')
+    value = split(req_dict.pop('value'), ',')
     try:
         deleted = DataDict.options.delete_options(app, name, *value)
         data = DataDict.options.get_options_serialized(app, name)

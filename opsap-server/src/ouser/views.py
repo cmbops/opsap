@@ -8,10 +8,10 @@ from rest_framework.exceptions import PermissionDenied
 
 from ouser.permissions import *
 from opsap.utils.decorators import post_validated_fields, status, post_data_to_dict
-from opsap.utils.base import logger
+from opsap.utils.base import logger, split
 
 from ouser.serializers import ExUserSerializer, ExGroupSerializer
-from ouser.user_api import *
+from ouser.utils import *
 
 
 @api_view(['POST'])
@@ -52,18 +52,40 @@ def user_add(request):
         return Response({"status": 1, "msg": msg, "data": serializer.data})
 
 
-@api_view(['GET'])
-@permission_classes((require_role('SU'),))
+@api_view(['GET', 'POST'])
+@permission_classes((require_role('GA'),))
 def user_list(request):
     """
     获取用户列表
 
     * 权限 - 超级管理员(SU)
+    * 参数
+    ** search - 搜索匹配(用户名/显示名/邮箱)
+    ** roles - 匹配角色(','号分隔列表)
+    ** group_ids - 匹配用户组(','号分隔列表)
     """
     msg_prefix = u"获取用户列表 "
+    req_user = request.user
     try:
-        user_list = ExUser.objects.all()
-        serializer = ExUserSerializer(user_list, many=True)
+        if req_user.role == 'SU':
+            users = ExUser.objects.all()
+        else:
+            users = ExUser.objects.none()
+            for group in req_user.mana_group_set:
+                users = users | group.users
+        if request.method == 'POST':
+            req_dict = post_data_to_dict(request.data)
+            keyword = req_dict.pop('search', '')
+            roles = split(req_dict.pop('role', ''))
+            groups = split(req_dict.pop('group_ids', ''))
+            if keyword:
+                users = users.filter(
+                    Q(username__icontains=keyword) | Q(name__icontains=keyword) | Q(email__icontains=keyword))
+            if roles:
+                users = users.filter(role__in=roles)
+            if groups:
+                users = users.filter(groups__in=groups)
+        serializer = ExUserSerializer(users, many=True)
     except Exception, e:
         msg = msg_prefix + u"失败, 错误信息: " + unicode(e)
         logger.error(msg)
@@ -88,19 +110,19 @@ def user_detail(request):
     try:
         if request.method == 'GET':
             user = req_user
-        if request.method == 'POST':
+        else:
             req_dict = post_data_to_dict(request.data)
             username = req_dict.pop('username', '')
             id = req_dict.pop('id', '')
             if username:
                 user = ExUser.objects.get(username=username)
-            elif id:
+            else:
                 user = ExUser.objects.get(pk=int(id))
             if req_user.role != 'SU' and not req_user.mana_group_set.filter(user=user).exist():
                 raise PermissionDenied(u"当前用户不具备该权限!")
         serializer = ExUserSerializer(user)
     except Exception, e:
-        if isinstance(e,PermissionDenied):
+        if isinstance(e, PermissionDenied):
             raise e
         msg = msg_prefix + u"失败, 错误信息: " + unicode(e)
         logger.error(msg)
@@ -136,12 +158,10 @@ def user_edit(request):
     name = req_dict.pop('name', '')
     role = req_dict.pop('role', '')
 
-
-
     try:
         if username:
             user = ExUser.objects.get(username=username)
-        elif id:
+        else:
             user = ExUser.objects.get(pk=int(id))
         if req_user.role != 'SU' and req_user != user:
             raise PermissionDenied(u"当前用户不具备该权限!")
@@ -159,7 +179,7 @@ def user_edit(request):
         user.save()
         serializer = ExUserSerializer(user)
     except Exception, e:
-        if isinstance(e,PermissionDenied):
+        if isinstance(e, PermissionDenied):
             raise e
         msg = (msg_prefix % username) + u"失败, 错误信息: " + unicode(e)
         logger.error(msg)
@@ -185,8 +205,8 @@ def user_delete(request):
     msg_prefix = u"删除用户 "
     req_dict = post_data_to_dict(request.data)
     req_user = request.user
-    username = req_dict.pop('username').split(',')
-    id = req_dict.pop('id').split(',')
+    username = split(req_dict.pop('username'))
+    id = split(req_dict.pop('id'))
     try:
         user_set = ExUser.objects.filter(id__in=id).filter(username__in=username)
         if not user_set.exists():
@@ -223,10 +243,10 @@ def group_add(request):
     req_dict = post_data_to_dict(request.data)
 
     name = req_dict.pop('name')
-    users_id = req_dict.pop('users_id', '').split(',')
-    managers_id = req_dict.pop('managers_id', '').split(',')
+    users_id = split(req_dict.pop('users_id', ''))
+    managers_id = split(req_dict.pop('managers_id', ''))
     comment = req_dict.pop('comment', '')
-    member_type = req_dict.pop('member_type','staff')
+    member_type = req_dict.pop('member_type', 'staff')
     try:
         if Group.objects.filter(name=name):
             raise Exception(u'组名已存在')
@@ -244,45 +264,130 @@ def group_add(request):
         return Response({"status": 1, "msg": msg, "data": serializer.data})
 
 
-@api_view(['GET'])
-@permission_classes((require_role('SU'),))
+@api_view(['GET', 'POST'])
+@permission_classes((require_role('GA'),))
 def group_list(request):
     """
     用户组列表
 
     * 权限 - 超级管理员(SU)
     * 参数
-    ** search - 用户组名称(可选)
-    ** id - 组id(可选)
+    ** search - 用户组名称
+    ** type - 用户类型
     """
-    keyword = request.GET.get('search', '')
-    group_id = request.GET.get('id', '')
-    user_group_list = ExGroup.objects.all().order_by('name')
-    many = True
-
-    if keyword:
-        user_group_list = user_group_list.filter(Q(name__icontains=keyword) | Q(comment__icontains=keyword))
-
-    if group_id:
-        many = False
-        user_group_list = user_group_list.filter(id=int(group_id))
-
-    serializer = ExGroupSerializer(user_group_list, many=many)
-    return Response({"status": "success", "msg": "", "data": serializer.data})
+    msg_prefix = u"获取用户组列表 "
+    req_user = request.user
+    try:
+        if req_user.role == 'SU':
+            groups = ExGroup.objects.all()
+        else:
+            groups = req_user.mana_group_set
+        if request.method == 'POST':
+            req_dict = post_data_to_dict(request.data)
+            keyword = req_dict.pop('search', '')
+            member_type = req_dict.pop('type', '').lower()
+            if keyword:
+                groups = groups.filter(Q(name__icontains=keyword) | Q(comment__icontains=keyword))
+            if member_type:
+                groups = groups.filter(member_type=member_type)
+        serializer = ExGroupSerializer(groups, many=True)
+    except Exception, e:
+        msg = msg_prefix + u"失败, 错误信息: " + unicode(e)
+        logger.error(msg)
+        return Response({"status": -1, "msg": msg, "data": {}}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        msg = msg_prefix + u"成功!"
+        return Response({"status": 0, "msg": msg, "data": serializer.data})
 
 
 @api_view(['POST'])
 @permission_classes((require_role('SU'),))
+@post_validated_fields(require_one=['name', 'id'])
+def group_edit(request):
+    """
+    修改用户信息
+
+    * 权限 - 普通用户(CU)
+    * 参数
+    ** name/id - 用户组名称/id
+    ** comment - 备注
+    ** member_type - 成员类型 staff/service
+    ** users_id/users_id_add - 用户/添加用户(id)(','号分隔列表)
+    ** managers_id/managers_id_add - 管理用户/添加管理用户(id)(','号分隔列表)
+    """
+    msg_prefix = u"修改用户组信息 %s "
+    req_dict = post_data_to_dict(request.data)
+
+    name = req_dict.pop('name', '')
+    id = req_dict.pop('id', '')
+    comment = req_dict.pop('comment', '')
+    member_type = req_dict.pop('member_type', '')
+    users_id = split(req_dict.pop('users_id', ''))
+    users_id_add = split(req_dict.pop('users_id_add', ''))
+    managers_id = split(req_dict.pop('managers_id', ''))
+    managers_id_add = split(req_dict.pop('managers_id_add', ''))
+    try:
+        # 获取用户组
+        if name:
+            group = ExGroup.objects.get(name=name)
+        else:
+            group = ExGroup.objects.get(pk=int(id))
+        # 修改信息
+        if comment:
+            group.comment = comment
+        if member_type:
+            group.member_type = member_type
+
+        if users_id:
+            group.user_set.clear()
+            users_id_add += users_id
+        if users_id_add:
+            group_add_users(group, *users_id_add)
+
+        if managers_id:
+            group.managers.clear()
+            managers_id_add += managers_id
+        if managers_id_add:
+            group_add_manager(group, *managers_id_add)
+
+        serializer = ExGroupSerializer(group)
+    except Exception, e:
+        msg = (msg_prefix % name) + u"失败, 错误信息: " + unicode(e)
+        logger.error(msg)
+        return Response({"status": -1, "msg": msg, "data": {}}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        msg = (msg_prefix % name) + u"成功!"
+        return Response({"status": 1, "msg": msg, "data": serializer.data})
+
+
+@api_view(['POST'])
+@permission_classes((require_role('SU'),))
+@post_validated_fields(require=['name', 'id'])
 def group_delete(request):
     """
     删除用户组
 
     * 权限 - 超级管理员(SU)
+    * 需同时提供用户组名称及id列表
     * 参数
-    ** id - 组id(列表)
+    ** name - 用户组名称(','号分隔列表)
+    ** id - 组id(','号分隔列表)
     """
-    group_id_list = request.POST.getlist('id', '')
-    for group_id in group_id_list:
-        ExGroup.objects.filter(id=group_id).delete()
-    msg = u'删除组成功'
-    return Response({"status": "success", "msg": msg, "data": {}})
+    msg_prefix = u"删除用户组 "
+    req_dict = post_data_to_dict(request.data)
+
+    name = split(req_dict.pop('name'))
+    id = split(req_dict.pop('id'))
+    try:
+        group_set = ExGroup.objects.filter(id__in=id).filter(name__in=name)
+        if not group_set.exists():
+            raise Exception(u"没有符合条件的用户组")
+        data = list(group_set.values('id', 'name', 'member_type'))
+        group_set.delete()
+    except Exception, e:
+        msg = msg_prefix + u"失败, 错误信息: " + unicode(e)
+        logger.error(msg)
+        return Response({"status": -1, "msg": msg, "data": {}}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        msg = msg_prefix + u"成功!"
+        return Response({"status": 1, "msg": msg, "data": data})

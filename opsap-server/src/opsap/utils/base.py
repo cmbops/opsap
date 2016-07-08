@@ -8,6 +8,15 @@ from django.http import QueryDict
 from rest_framework.parsers import DataAndFiles
 
 
+# 基础处理函数
+def split(str_li, sep=','):
+    if not (isinstance(sep, str) and len(sep)==1):
+        raise TypeError("Sep should be a simple char such as ','")
+    if not str_li:
+        return []
+    return str_li.split(sep)
+
+
 def set_log(level, filename='opsap.log'):
     """
     根据提示设置log打印
