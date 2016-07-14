@@ -21,6 +21,16 @@ class ROLES(object):
         return cls.SU, cls.GM, cls.CU, cls.SN,
 
 
+class OSTYPES(object):
+    """操作系统类型"""
+    WIN = ('Windows', 'Windows OS')
+    LNX = ('Linux', 'Linux OS')
+
+    @classmethod
+    def as_choice(cls):
+        return cls.WIN, cls.LNX,
+
+
 # 基础处理函数
 def split(str_li, sep=','):
     if not (isinstance(sep, str) and len(sep) == 1):
@@ -28,6 +38,28 @@ def split(str_li, sep=','):
     if not str_li:
         return []
     return str_li.split(sep)
+
+
+def ip_bin2str(i_bin):
+    if len(i_bin) < 32:
+        i_bin = i_bin.rjust(32, str(0))
+    i_raw = [i_bin[i * 8:(i + 1) * 8] for i in range(4)]
+    i_str = [str(int(subn, 2)) for subn in i_raw]
+    return '.'.join(i_str)
+
+
+def ip_str2bin(i_str):
+    i_raw = [bin(int(subn)) for subn in i_str.split('.')]
+    if len(i_raw) != 4:
+        return '0' * 32
+    i_bin = [subn[2:].rjust(8, str(0)) for subn in i_raw]
+    return ''.join(i_bin)
+
+
+def ping(host, count=2, wait=2):
+    args = ['ping', '-c', str(count), '-w', str(wait), host]
+    status = subprocess.Popen(args).wait()
+    return status == 0
 
 
 def set_log(level, filename='opsap.log'):

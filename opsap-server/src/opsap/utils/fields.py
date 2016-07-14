@@ -16,3 +16,17 @@ class JsonField(models.TextField):
     def get_prep_value(self, value):
         value = json.dumps(value)
         return super(JsonField, self).get_prep_value(value)
+
+
+@JsonField.register_lookup
+class DictMapLookup(models.Lookup):
+    lookup_name = 'map'
+
+    def as_sql(self, compiler, connection):
+        logger.debug(compiler)
+        logger.debug(connection)
+        lhs, lhs_params = self.process_lhs(compiler, connection)
+        rhs, rhs_params = self.process_rhs(compiler, connection)
+        key, value = rhs_params[0][1:-1].split('%')
+        params = ["%\"{0}\": \"{1}\"%".format(key, value)]
+        return "%s LIKE %%s" % lhs, params

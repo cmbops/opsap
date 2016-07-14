@@ -73,7 +73,7 @@ FUNC_APPS = (
     'opsap',
     'ouser',
     # 'odata',
-    # 'ovm',
+    'ovm',
 )
 INSTALLED_APPS += FUNC_APPS
 
