@@ -24,3 +24,6 @@ docs/_build/
 /docker/
 /keys/
 /opsap-ui/node_module/
+/opsap-ui/dist/
+/opsap-ui/nodejs-jw*
+DS_*
