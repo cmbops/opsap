@@ -6,8 +6,123 @@ from .tasks import vmtask_clone_vm, sync_vc
 from .vm_api import *
 from .vmomi_api import *
 
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
 
 # Create your views here.
+
+@api_view(['POST'])
+@permission_classes((require_role('CU'),))
+def application_add(request):
+    """
+    添加VM申请
+
+    * 权限 - 超级管理员(SU)
+    * 参数
+    ** username/id - 用户名称/用户id
+    ** email - 邮箱地址
+    ** password - 密码
+    ** name - 显示名称
+    ** role - 角色(CU/GM/SN), SU只通过后台创建
+    """
+    msg_prefix = u"添加VM申请 "
+    env_type = request.POST.get('env_type', '')
+    cpu = int(request.POST.get('cpu', ''))
+    memory = int(request.POST.get('memory', ''))
+    os_version = request.POST.get('os_version', '')
+    data_disk = int(request.POST.get('data_disk', ''))
+    request_num = int(request.POST.get('request_num', ''))
+    apply_reason = request.POST.get('apply_reason', '')
+    submit_tag = request.POST.get('submit_tag', '')
+
+    application = None
+    try:
+        if username:
+            user = ExUser.objects.get(username=username)
+        elif id:
+            user = ExUser.objects.get(pk=int(id))
+        else:
+            raise ServerError(u'用户名/用户id 至少提供一项')
+
+        req_user = request.user
+        if req_user.role != 'SU' and req_user != user:
+            return Response(status=403)
+
+        if email:
+            user.email = email
+        if role and req_user.role == 'SU':
+            user.role = role
+            user.is_superuser = (role == 'SU')
+            user.is_staff = (role == 'SU')
+        if name:
+            user.name = name
+        if password:
+            user.set_password(password=password)
+        user.save()
+        serializer = ExUserSerializer(user)
+    except Exception, e:
+        msg = (msg_prefix % username) + u"失败, 错误信息: " + unicode(e)
+        return Response({"status": -1, "msg": msg, "data": {}})
+    else:
+        msg = (msg_prefix % username) + u"成功!"
+        return Response({"status": 1, "msg": msg, "data": serializer.data})
+
+
+@api_view(['POST'])
+@permission_classes((require_role('CU'),))
+def application_add(request):
+    """
+    添加VM申请
+
+    * 权限 - 超级管理员(SU)
+    * 参数
+    ** name - 用户组名称
+    ** comment - 用户组描述
+    ** users_selected - 初始用户(id)(列表)
+    """
+    env_type = request.POST.get('env_type', '')
+    cpu = int(request.POST.get('cpu', ''))
+    memory = int(request.POST.get('memory', ''))
+    os_version = request.POST.get('os_version', '')
+    data_disk = int(request.POST.get('data_disk', ''))
+    request_num = int(request.POST.get('request_num', ''))
+    apply_reason = request.POST.get('apply_reason', '')
+    submit_tag = request.POST.get('submit_tag', '')
+
+    application = None
+    if submit_tag:
+
+    if submitt == 'submit':
+        apply_status = "SM"
+        try:
+            application = db_add_userapply(env_type=env_type, fun_type=fun_type, cpu=cpu, memory_gb=memory,
+                                           os_type=os_type,
+                                           datadisk_gb=data_disk, request_vm_num=request_num,
+                                           apply_status=apply_status, apply_reason=apply_reason,
+                                           apply_date=datetime.now(), user=user)
+            db_add_approvel(application=application, appro_env_type=env_type, appro_fun_type=fun_type,
+                            appro_cpu=cpu, appro_memory_gb=memory, appro_os_type=os_type,
+                            appro_datadisk_gb=data_disk, appro_vm_num=request_num, appro_status='AI',
+                            appro_date=datetime.now())
+
+        except ServerError:
+            pass
+        else:
+            return HttpResponseRedirect(reverse('resource_view'))
+    else:
+        apply_status = "HD"
+        try:
+            application = db_add_userapply(env_type=env_type, fun_type=fun_type, cpu=cpu, memory_gb=memory,
+                                           os_type=os_type,
+                                           datadisk_gb=data_disk, request_vm_num=request_num,
+                                           apply_status=apply_status, apply_reason=apply_reason,
+                                           apply_date=datetime.now(), user=user)
+        except Exception, e:
+            raise e
+        else:
+            return HttpResponseRedirect(reverse('saving_resource_view'))
+
+
 
 
 @require_role('admin')

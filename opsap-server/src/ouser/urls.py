@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^group/', include([
         url(r'^add/$', views.group_add),
         url(r'^list/$', views.group_list),
+        url(r'^edit/$', views.group_edit),
         url(r'^delete/$', views.group_delete),
     ])),
 ]

@@ -24,6 +24,9 @@ b) 在请求头指定`Accept`标签
 	
 	/
 	/api-token-auth    				POST				获取身份认证token
+	/param/
+	/param/get						POST				查询系统参数
+	/param/set						POST				设置系统参数
 	/options/
 	/options/add					POST				添加动态表单选项
 	/options/list					POST				获取动态表单选项
@@ -36,10 +39,9 @@ b) 在请求头指定`Accept`标签
 	/ouser/user/detail				GET/POST			获取用户详情
 	/ouser/user/edit				POST				修改用户信息
 	/ouser/user/delete				POST				删除用户
-    /ouser/group/
+	/ouser/group/
 	/ouser/group/add				POST				添加用户组
 	/ouser/group/list				GET					获取用户组列表
-	/ouser/group/detail				GET/POST			获取用户组详情
 	/ouser/group/edit				POST				修改用户组信息
 	/ouser/group/delete				POST				删除用户组
 	/ovm/
@@ -51,6 +53,7 @@ b) 在请求头指定`Accept`标签
 	/ovm/application/submit			POST				提交VM申请
 	/ovm/application/delete			POST				删除VM申请
 	/ovm/approvel/
+	/ovm/approvel/apply				POST				添加VM申请
 	/ovm/approvel/list				GET/POST			获取VM审核列表
 	/ovm/approvel/detail			POST				获取VM审核详情
 	/ovm/approvel/edit				POST				修改VM审核信息

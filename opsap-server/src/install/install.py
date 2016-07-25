@@ -58,7 +58,7 @@ def get_ip_addr(ifname='eth0'):
         ips = os.popen(
             "LANG=C ifconfig | grep \"inet addr\" | grep -v \"127.0.0.1\" | awk -F \":\" '{print $2}' | awk '{print $1}'").readlines()
         if len(ips) > 0:
-            return ips[0]
+            return ips[0].strip()
     return ''
 
 
