@@ -23,7 +23,7 @@ docs/_build/
 /*.conf
 /docker/
 /keys/
-/opsap-ui/node_module/
+/opsap-ui/node_modules/
 /opsap-ui/dist/
 /opsap-ui/nodejs-jw*
 DS_*
