@@ -24,7 +24,7 @@
                         </ul>
                     </div>
                     <div class="logo-element">
-                        JS+
+                        华商科技
                     </div>
                 </li>
                 <li id="index">
@@ -34,20 +34,42 @@
                     <a ui-sref="#"><i class="fa fa-group"></i> <span class="nav-label">用户管理</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class="group"><a ui-sref="#">查看用户组</a></li>
-                        <li class="user"><a ui-sref="#">查看用户<span class="label pull-right">{{title}}</span></a></li>
+                        <li class="user"><a ui-sref="index.user({operation:'list'})">查看用户<span class="label pull-right">{{title}}</span></a></li>
                     </ul>
+                </li>
+                <li id="vmmanager">
+                    <a href="#"><i class="fa fa-vimeo-square"></i> <span class="nav-label">资源管理</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class="apply"><a href="#">资源申请</a></li>
+                        <li class="list"><a href="#">申请审批</a></li>
+                        <li class="resource"><a href="#">资源概览</a></li>
+                        <li id="vmmanagersaving_resource"><a href="#"><span class="nav-label">未提交申请</span></a></li>
+                        <li class="set_vm"><a href="#">初始化配置</a></li>
+                    </ul>
+                </li>
+                <li id='datamanager'>
+                    <a href="#"><i class="fa fa-briefcase"></i> <span class="nav-label">数据库管理</span><span class="label label-info pull-right"></span></a>
+                </li>
+                <li id='databackup'>
+                    <a href="#"><i class="fa fa-magnet"></i> <span class="nav-label">数据备份</span><span class="label label-info pull-right"></span></a>
+                </li>
+                <li id='netmanager'>
+                    <a href="#"><i class="fa fa-tasks"></i> <span class="nav-label">网络管理</span><span class="label label-info pull-right"></span></a>
+                </li>
+                <li id='cmdb'>
+                    <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">CMDB</span><span class="label label-info pull-right"></span></a>
+                </li>
+                <li id='statics'>
+                    <a href="#"><i class="fa fa-bar-chart"></i> <span class="nav-label">统计报表</span><span class="label label-info pull-right"></span></a>
                 </li>
             </ul>
         </div>
     </nav>
     <div id="page-wrapper" class="gray-bg">
-       <!--  <div class="row border-bottom">
+        <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
-                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-                        <div class="form-group">
-                            <input type="text" placeholder="输入搜索..." class="form-control" name="search" id="top-search">
-                        </div>
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary"  href="#"><i class="fa fa-bars"></i> </a>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
@@ -65,6 +87,32 @@
                     </li>
                 </ul>
             </nav>
-        </div> -->
+        </div>
+        <!-- 树形标题 -->
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-sm-10">
+                <h2>{{ header_title }}</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="{% url 'index' %}">仪表盘</a>
+                    </li>
+                    <li>
+                        {% if path1 %}
+                        <a>{{ path1 }}</a> {% endif %}
+                    </li>
+                    {% if path2 %}
+                    <li class="active">
+                        <strong>{{ path2 }}</strong>
+                    </li>
+                    {% endif %}
+                </ol>
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+        <!-- 内容 -->
+        <div class="wrapper wrapper-content animated fadeInright" ui-view></div>
+        <!-- 固定底部 -->
+        <div class="footer fixed"></div>
     </div>
 </div>

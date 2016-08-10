@@ -1,0 +1,163 @@
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>审批页面</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-wrench"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="panel blank-panel">
+                        <div class="panel-heading">
+                            <div class="panel-options">
+                                <ul class="nav nav-tabs">
+                                    <li id="tab1" class="active">
+                                        <a data-toggle="tab" href="#tab-default" aria-expanded="true">已提交申请</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="tab-content">
+                                <div id="tab-default" class="tab-pane active">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">申请单号</th>
+                                                <th class="text-center">申请人</th>
+                                                <th class="text-center">申请信息</th>
+                                                <th class="text-center">类型</th>
+                                                <th class="text-center">数量</th>
+                                                <th class="text-center">原因</th>
+                                                <th class="text-center">处理</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for key in applys %}
+                                            <tr class="detail-table" id="{{ key.application_id }}tr">
+                                                <td class="text-center" id="{{ key.pk }}" style="display:none">{{ key.pk }}</td>
+                                                <td class="text-center" id="{{ key.application_id }}">{{ key.application_id }}</td>
+                                                <td class="text-center">{{ key.application.user.name}}</td>
+                                                <td class="text-center">{{ key.appro_cpu}}C/{{ key.appro_memory_gb}}G/{{key.appro_datadisk_gb}}G</td>
+                                                <td class="text-center">{{ key.appro_env_type|get_env_type }}/
+                                                    {% ifequal key.appro_fun_type "normal" %} 普通型 {% endifequal %}
+                                                    {% ifequal key.appro_fun_type "was" %} 内存型 {% endifequal %}
+                                                    {% ifequal key.appro_fun_type "database" %} I/O密集型 {% endifequal %}/
+                                                    {% ifequal key.appro_os_type "WIN" %} WINDOWS {% endifequal %}
+                                                    {% ifequal key.appro_os_type "LUX" %} LINUX {% endifequal %}</td>
+                                                <td class="text-center">{{ key.appro_vm_num}}台</td>
+                                                <td class="text-center">{{ key.application.apply_reason}}</td>
+                                                <td class="text-center">
+                                                    <div>
+                                                        <button class="btn btn-primary btn-xs modify-btn" id="{{ key.application_id }}modify-btn" type="submit" data-toggle="modal" data-target="#{{ key.id}}modal">修改</button>
+                                                        {% include 'jvmanager/modify_modal.html' %}
+                                                        <button class="btn btn-success btn-xs agree-btn" type="submit" id="{{ key.application_id }}approved" data-toggle="modal" data-target="#{{ key.id}}AGModal">同意</button>
+                                                        {% include 'jvmanager/agree_modal.html' %}
+                                                        <button class="btn btn-danger btn-xs delete-btn" type="submit" id="delete" data-toggle="modal" data-target="#{{key.application_id}}delmodal">回退</button>
+                                                        <div class="modal fade" id="{{key.application_id}}delmodal" tabindex="-1" role="dialog">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                        <h4 class="modal-title">回退申请</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form>
+                                                                            <div class="form-group">
+                                                                                <label for="message-text" class="control-label">回退原因:</label>
+                                                                                <textarea class="form-control" id="return-reason"></textarea>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                                        <button type="button" class="btn btn-primary delete-cof-btn">退回</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="dataTables_info" id="editable_info" role="status" aria-live="polite">
+                                                Showing {{ applys.start_index }} to {{ applys.end_index }} of {{ p.count }} entries
+                                            </div>
+                                        </div>
+                                        {% include 'paginator.html' %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="panel blank-panel">
+                        <div class="panel-heading">
+                            <div class="panel-options">
+                                <ul class="nav nav-tabs">
+                                    <li id="tab1" class="active">
+                                        <a data-toggle="tab" href="#tab-default" aria-expanded="true">已审批申请</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <tab-content>
+                                <div id="tab-default" class="tab-pane active">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">申请单号</th>
+                                                <th class="text-center">系统名称</th>
+                                                <th class="text-center">IP</th>
+                                                <th class="text-center">集群/资源池</th>
+                                                <th class="text-center">存储</th>
+                                                <th class="text-center">生成进度</th>
+                                                <th class="text-center">生成日志</th>
+                                                <th class="text-center">
+                                                    <input type="checkbox" name="selectall" id="selectall" checked="">
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="agree-table">
+                                            {% for list in vmorder %}
+                                            <tr id="{{list.id}}tr">
+                                                <td class="text-center">{{list.id}}</td>
+                                                <td class="text-center">{{list.approvel.appro_os_type}}</td>
+                                                <td class="text-center">{{ list.loc_ip.ipaddress }}</td>
+                                                <td class="text-center">{{list.loc_cluster.name}}</td>
+                                                <td class="text-center">{{list.loc_storage.name}}</td>
+                                                <td class="text-center" id="{{list.id}}process">{% if list.gen_status == "AP" %} 待生成 {% else %}{{list.gen_progress}}%{% endif %} </td>
+                                                <td class="text-center" id="{{list}}gen_log">{{list.gen_log}}</td>
+                                                <td class="text-center" id="{{list.id}}loading">
+                                                    <input type="checkbox" name="checkbox" id="{{list.id}}check" value="{{list.id}}" {% ifequal list.gen_progress 100 %} disabled {% endifequal %}>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div style="margin:0 auto;width:100px;">
+                                    <button class="btn btn-primary btn-lg gen-btn">生成资源</button>
+                                </div>
+                            </tab-content>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

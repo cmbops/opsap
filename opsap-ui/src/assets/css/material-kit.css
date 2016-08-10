@@ -1600,11 +1600,10 @@ label.control-label {
   font-weight: 400;
 }
 .form-group label.control-label {
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.07143;
-  color: #AAAAAA;
+  color: #0A0A0A;
   font-weight: 400;
-  margin: 16px 0 0 0;
 }
 .form-group .help-block {
   margin-top: 0;

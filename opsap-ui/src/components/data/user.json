@@ -1,0 +1,19 @@
+[{
+	"id": 1,
+	"username": "zhuods",
+	"name": "zhuods",
+	"priority": "SU",
+	"is_active": true,
+	"email": "zhuods@qq.com",
+	"group":["test", "hhhh"]
+},
+{
+	"id": 2,
+	"username": "caijb",
+	"name": "caijb",
+	"priority": "CU",
+	"is_active" : true,
+	"email": ":caijb@qq.com",
+	"group":["test"]	
+}
+]

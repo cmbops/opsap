@@ -51,9 +51,11 @@ baseservice.factory('UserService', ['BaseService', function(BaseService){
 			return BaseService.POST('/api/user/logout')
 		} 
 	}
+	console.log('userservice login fn start..');
 	return user;
 }])
 
+//记录登录状态service
 baseservice.factory('AuthenticationService', ['$rootScope', function($rootScope){
 	var auth = {
 		isLogged: false
@@ -62,6 +64,8 @@ baseservice.factory('AuthenticationService', ['$rootScope', function($rootScope)
 	return auth;
 }])
 
+
+//认证拦截service，判断是非登录
 baseservice.factory('TokenInterceptor', ['$q', '$window', '$location', 'AuthenticationService', function($q, $window, $location, AuthenticationService){
 	return {
 		request: function(config) {
