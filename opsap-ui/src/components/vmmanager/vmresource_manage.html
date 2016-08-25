@@ -1,0 +1,71 @@
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="VmManageController as vmmanage">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>任务管理页面</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-wrench"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            已审批申请
+                        </div>
+                        <div class="panel-body">
+                          <div class="tab-content">
+                                <div id="tab-default" class="tab-pane active">
+                                <pre>{{vmmanage.selected}}</pre>
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">申请单号</th>
+                                                <th class="text-center">系统名称</th>
+                                                <th class="text-center">IP</th>
+                                                <th class="text-center">集群/资源池</th>
+                                                <th class="text-center">存储</th>
+                                                <th class="text-center">生成进度</th>
+                                                <th class="text-center">生成日志</th>
+                                                <th class="text-center">
+                                                    <input type="checkbox" name="selectall" id="selectall" ng-click="vmmanage.setSelectAll($event, vmmanage.resourcelist, vmmanage.selected)">
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="agree-table">
+                                            <tr ng-repeat="list in vmmanage.resourcelist">
+                                                <td class="text-center">{{list.id}}</td>
+                                                <td class="text-center">{{list.appro_os_type}}</td>
+                                                <td class="text-center">{{ list.ipaddress }}</td>
+                                                <td class="text-center">{{list.loc_cluster_name}}</td>
+                                                <td class="text-center">{{list.loc_storage_name}}</td>
+                                                <td class="text-center" id="{{list.id}}process"></td>
+                                                <td class="text-center" id="{{list}}gen_log">{{list.gen_log}}</td>
+                                                <td class="text-center" id="{{list.id}}loading">
+                                                    <input type="checkbox" 
+                                                           name="checkbox" 
+                                                           value="{{list.id}}" 
+                                                           ng-checked="vmmanage.isSelected(list.id, vmmanage.selected)" 
+                                                           ng-click="vmmanage.updateSelection($event, list.id, vmmanage.selected)">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div style="margin:0 auto;width:100px;">
+                                    <button class="btn btn-info btn-lg gen-btn">生成资源</button>
+                                </div>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

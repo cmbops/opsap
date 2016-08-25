@@ -8,5 +8,6 @@
         <input type="password" ng-model="login.user.password" class="form-control" placeholder="密码" ng-keyup="login.checkEnter($event)" required>
     </div>
     <button class="btn btn-success block full-width" ng-click="login.login()">Login</button>
-    <p class="m-t"> <small><b>Copyright</b> CMB DevOps team © 2016-2016 {{user.username}}</small> <span></span></p>
+    <div class="alert alert-danger text-center" ng-show="alertShow">{{ login.alertMsg }}</div>
+    <p class="m-t"> <small><b>Copyright</b> CMB DevOps team © 2016-2016 </small> <span></span></p>
 </div>

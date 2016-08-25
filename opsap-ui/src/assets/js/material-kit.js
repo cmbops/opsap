@@ -60,6 +60,7 @@ $(document).ready(function(){
     // Activate Popovers
     $('[data-toggle="popover"]').popover();
 
+
     // Active Carousel
 	$('.carousel').carousel({
       interval: 400000

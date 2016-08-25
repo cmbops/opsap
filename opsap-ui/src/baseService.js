@@ -37,6 +37,43 @@ baseservice.factory('BaseService', ['$rootScope', '$http', '$q', function($rootS
 	}
 }])
 
+baseservice.factory('SelectService', ['$rootScope', function($rootScope){
+	return {
+		isSelected: isSelected,
+		updateSelection: updateSelection,
+		setSelectAll: setSelectAll
+	}
+
+	function updateSelection(event, id, selected) {
+		var checkbox = event.target;
+		var action = (checkbox.checked ? 'add' : 'remove');
+		updateSelected(action, id, selected);
+	}
+
+	function updateSelected(action, id, selected) {
+		if(action == 'add' && selected.indexOf(id) == -1) {
+			selected.push(id);
+		}
+		if(action == 'remove' && selected.indexOf(id) != -1) {
+			var idx = selected.indexOf(id);
+			selected.splice(idx, 1);
+		}
+	}
+
+	function isSelected(id, selected) {
+		return selected.indexOf(id)>=0;
+	}
+
+	function setSelectAll(event, group,  selected) {
+		var checkbox = event.target;
+		var action = (checkbox.checked ? 'add' : 'remove');
+		for(let i = 0; i < group.length; i++) {
+			let entity = group[i];
+			updateSelected(action, entity.id, selected);
+		}
+	}
+}])
+
 baseservice.factory('UserService', ['BaseService', function(BaseService){
    
    //用户状态处理

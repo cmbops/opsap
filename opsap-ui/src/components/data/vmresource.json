@@ -1,0 +1,36 @@
+[{
+	"id": 1,
+	"username": "zhuods",
+	"env_type": "dev",
+	"cpu": 4,
+	"memory": 8,
+	"OS_type": "SUSE 10",
+	"fun_type": "zhuods@qq.com",
+	"amount": 2,
+	"dataVolume": 30,
+	"software":["WAS7", "NGINX"]
+},
+{
+	"id": 1,
+	"username": "caijb",
+	"env_type": "tes",
+	"cpu": 4,
+	"memory": 8,
+	"OS_type": "SUSE 10",
+	"fun_type": "zhuods@qq.com",
+	"amount": 2,
+	"dataVolume": 30,
+	"software":["WAS7", "NGINX"]
+},{
+	"id": 3,
+	"username": "qiuzx",
+	"env_type": "ODR",
+	"cpu": 4,
+	"memory": 8,
+	"OS_type": "SUSE 10",
+	"fun_type": "zhuods@qq.com",
+	"amount": 4,
+	"dataVolume": 20,
+	"software":["WAS8", "NGINX"]
+}
+]

@@ -21,7 +21,8 @@
                     <div class="">
                         <a ui-sref="index.user({operation:'add'})" class="btn btn-sm btn-primary "> 添加用户 </a>
                         <a id="del_btn" class="btn btn-sm btn-danger "> 删除所选 </a>
-                        <form id="search_form" method="get" action="" class="pull-right mail-search">
+
+                        <!-- <form id="search_form" method="get" action="" class="pull-right mail-search">
                             <div class="input-group">
                                 <input type="text" class="form-control input-sm" id="search_input" name="keyword" placeholder="Search">
                                 <div class="input-group-btn">
@@ -30,14 +31,14 @@
                                     </button>
                                 </div>
                             </div>
-                        </form>
+                        </form> -->
                     </div>
-
+                    <pre>{{user.selected}}</pre>
                     <table class="table table-striped table-bordered table-hover " id="editable" >
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <input type="checkbox" id="check_all" onclick="checkAll('check_all', 'checked')">
+                                    <input type="checkbox" id="check_all" ng-click="user.setSelectAll($event, user.users, user.selected)">
                                 </th>
                                 <th class="text-center">用户名</th>
                                 <th class="text-center">姓名</th>
@@ -49,37 +50,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="gradeX" ng-repeat="(key, user) in user.users">
+                            <tr class="gradeX" ng-repeat="(key, usr) in user.users">
                                 <td class="text-center">
-                                    <input type="checkbox" name="checked" value="{{ user.id }}">
+                                    <input type="checkbox"
+                                           name="checked" 
+                                           value="{{ usr.id }}"
+                                           ng-checked="user.isSelected(usr.id, user.selected)" 
+                                           ng-click="user.updateSelection($event, usr.id, user.selected)">
                                 </td>
-                                <td class="text-center"><a href="#">{{ user.username }}</a></td>
-                                <td class="text-center"> {{ user.name }} </td>
-                                <td class="text-center" title="{{user.group}}"> {{ user.group }} </td>
-                                <td class="text-center"> {{ user.id }}</td>
-                                <th class="text-center">{{ user.id }}</th>
-                                <td class="text-center">{{ user.is_active }}</td>
+                                <td class="text-center"><a href="#">{{ usr.username }}</a></td>
+                                <td class="text-center"> {{ usr.name }} </td>
+                                <td class="text-center" title="{{user.group}}"> {{ usr.group }} </td>
+                                <td class="text-center"> {{ usr.id }}</td>
+                                <th class="text-center">{{ usr.id }}</th>
+                                <td class="text-center">{{ usr.is_active }}</td>
                                 <td class="text-center">
-                                    <a href="{% url 'user_edit' %}?id={{ user.id }}" class="btn btn-xs btn-info">编辑</a>
+                                    <a sref="index.user({operation:'edit', id:usr.id})" class="btn btn-xs btn-info">编辑</a>
                                     <a value="{{ user.uuid }}" class="btn btn-xs btn-warning email">Email</a>
-                                    <a value="{% url 'user_del' %}?id={{ user.id }}" class="btn btn-xs btn-danger del {% if user.username == 'admin' %} disabled {% endif %}">删除</a>
+                                    <a ng-click="user.deleteUser(usr.id, usr.username)" class="btn btn-xs btn-danger del">删除</a>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="row">
-                        <div class="col-sm-6">
-                            <div class="dataTables_info" id="editable_info" role="status" aria-live="polite">
-                                Showing {{ users.start_index }} to {{ users.end_index }} of {{ p.count }} entries
+                                        <div class="col-sm-6">
+                                            <div class="dataTables_info" id="editable_info" role="status" aria-live="polite">
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <ul uib-pagination total-items="user.totalItems" ng-model="user.currentPage" style="float:right"></ul>
+                                        </div>
                             </div>
-                        </div>
-                        <ul class="pagination pagination-info">
-                            <li><a href="">1</a></li>
-                            <li><a href="">2</a></li>
-                            <li class='active'><a href="">3</a></li>
-                        </ul>
-                        <pagination></pagination> 
-                    </div>
                 </div>
             </div>
         </div>

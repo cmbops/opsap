@@ -15,5 +15,14 @@
 	"is_active" : true,
 	"email": ":caijb@qq.com",
 	"group":["test"]	
+},
+{
+	"id": 3,
+	"username": "hhhh",
+	"name": "hhhh",
+	"priority": "CU",
+	"is_active" : true,
+	"email": ":caijb@qq.com",
+	"group":["test"]	
 }
 ]

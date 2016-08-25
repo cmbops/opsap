@@ -3,7 +3,7 @@
  */
 const $inject = ['$scope'];
 const NavController = function($scope) {
-	this.title = 'index'
+	this.title = 'index';
 }
 
 NavController.$inject = $inject;

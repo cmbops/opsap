@@ -772,8 +772,7 @@ a .material-icons, a:hover .material-icons, a:focus .material-icons {
 
 .btn-group,
 .btn-group-vertical {
-  position: relative;
-  margin: 10px 1px;
+  position: absolute;
 }
 .btn-group.open > .dropdown-toggle.btn, .btn-group.open > .dropdown-toggle.btn.btn-default,
 .btn-group-vertical.open > .dropdown-toggle.btn,
@@ -1596,7 +1595,7 @@ label.control-label {
 .form-group label {
   font-size: 14px;
   line-height: 1.42857;
-  color: #AAAAAA;
+  color: #0c0c0c;
   font-weight: 400;
 }
 .form-group label.control-label {
@@ -1761,7 +1760,7 @@ select.form-control {
   border-color: #D2D2D2;
 }
 select.form-control[multiple], .form-group.is-focused select.form-control[multiple] {
-  height: 85px;
+  height: auto;
 }
 
 .input-group-btn .btn {
@@ -3269,6 +3268,9 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
 
 .slider {
   background: #c8c8c8;
+  width:300px;
+  float: left;
+  margin:10px;
 }
 
 .slider.noUi-connect {

@@ -14,12 +14,12 @@ const routerConfig = function($stateProvider,  $urlRouterProvider) {
 	  	  url: '/login',
 	  	  template: require('./components/login/login.html'),
 	  	  controller: 'LoginController as login',
-	  })
+	  }) 
 	  .state('index', {
 	  	  url: '/index',
 	  	  template: require('./components/dashboard/nav.html'),
 	  	  data: { requireLogin: true},
-	  	  controller: 'NavController'
+	  	  controller: 'NavController as nav'
 	  })
 	  .state('index.user', {
 	  	  url: '/user/:operation',
@@ -31,7 +31,8 @@ const routerConfig = function($stateProvider,  $urlRouterProvider) {
 	  .state('index.usergroup', {
 	  	url: '/usergroup/:operation',
 	  	templateUrl: function($stateParams) {
-	  		return COMMON_URL + '/user/group_' + $stateParams.operation + '.html'
+	  		return COMMON_URL +
+	  		 '/user/group_' + $stateParams.operation + '.html'
 	  	},
 	  	controller: 'UserGroupController as usergroup'
 	  })
@@ -40,7 +41,11 @@ const routerConfig = function($stateProvider,  $urlRouterProvider) {
 	  	templateUrl: function($stateParams) {
 	  		return COMMON_URL + '/vmmanager/vmresource_' + $stateParams.operation + '.html'
 	  	}
-	  })	
+	  })
+	  .state('index.datamanager', {
+	  	url: '/datamanager',
+	  	template: require('./components/datamanager/data_list.html')
+	  })
 }
 
 routerConfig.$inject = $inject;

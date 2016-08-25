@@ -40,7 +40,10 @@ const LoginController = function($scope, $rootScope, $state, $window, UserServic
 	vm.user = {};
 	vm.login = login;
 	vm.checkEnter = checkEnter;
-
+	$scope.$on('alert', function(event, text) {
+		vm.alertShow = true;
+		vm.alertMsg = text;
+	})
 
 	function login() {
 		console.log("login fn start...")

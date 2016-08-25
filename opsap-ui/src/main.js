@@ -1,14 +1,33 @@
+/**
+ * 主页面入口
+ */
+
+//css文件依赖
+require('./assets/css/bootstrap.min.css')
+require('./assets/css/material-kit.css')
+require('./assets/css/style.css')
+require('./assets/css/rzslider.min.css')
+require('./assets/css/font-awesome.min.css')
+
+
+
+//angular依赖
 require('angular-ui-router');
+require('angular-ui-bootstrap');
 require('./baseService');
 
 var angular = require('angular');
 
 var opsap = angular.module('opsap', [
 	'ui.router',
+	'ui.bootstrap',
 	'baseService',
+	'rzModule',
 	require('./components/login').name,
 	require('./components/dashboard').name,
-	require('./components/user').name
+	require('./components/user').name,
+	require('./components/vmmanager').name,
+	require('./components/datamanager').name,
 	])
 
 //控制器

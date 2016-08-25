@@ -1,0 +1,9 @@
+[{
+	"name": "fun_type",
+	"group":["test", "hhhh"]
+},
+{
+	"name": "OS",
+	"group":["win", "SUSE 10", "SUSE 11"]	
+}
+]

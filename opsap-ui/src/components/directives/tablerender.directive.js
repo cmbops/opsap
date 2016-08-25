@@ -5,7 +5,13 @@
 const tablerenderDirective = function(){
 	return {
 		restrict: 'AE',
-		templateUrl: 'tablerender.directive.html'
+		template: require('./tablerender.directive.html'),
+		scope: {
+			titles: '=',
+			contents: '=',
+			operate: '@'
+		},
+		transclude: true
 	}
 }
 
