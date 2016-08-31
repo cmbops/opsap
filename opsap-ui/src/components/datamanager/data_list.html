@@ -18,10 +18,22 @@
                 </div>
                 <div class="ibox-content">
                     <form class="form-inline" action="" method="get">
+                    
                         <div class="form-group" id="date_5">
                             <div class="input-daterange input-group" id="datepicker">
                                 <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="dt" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width:100px"/>
+                                    <span class="input-group-btn">
+            <button type="button" class="btn btn-xs btn-success" ng-click="open1()"><i class="fa fa-calendar"></i></button>
+          </span>
+                                </p>
+                            </div>
+                        </div>
+                        to
+                        <div class="form-group" id="date_5">
+                            <div class="input-daterange input-group" id="datepicker">
+                                <p class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="dt" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width:100px"/>
                                     <span class="input-group-btn">
             <button type="button" class="btn btn-xs btn-success" ng-click="open2()"><i class="fa fa-calendar"></i></button>
           </span>
@@ -30,7 +42,7 @@
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <select name="username" data-placeholder="全部文件" class="chosen-select" style="width:200px;" tabindex="2">
+                                <select name="username" data-placeholder="全部文件" class="input-sm" tabindex="2" style="margin:0 10px 20px 0">
                                     <option value="">opics文件</option>
                                     <option value="">电子档案文件</option>
                                 </select>
@@ -38,7 +50,7 @@
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <select name="file_status" class="chosen-select" style="width:200px;" tabindex="4">
+                                <select name="file_status" class="input-sm" tabindex="4" style="margin:0 10px 20px 0">
                                     <option value="">文件存在</option>
                                     <option value="">文件已删除</option>
                                 </select>
@@ -46,14 +58,14 @@
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <select name="emc" data-placeholder="车公庙机房" class="chosen-select" style="width:200px;" tabindex="4">
+                                <select name="emc" data-placeholder="车公庙机房" class="input-sm" tabindex="4" style="margin:0 10px 20px 0">
                                     <option value="">车公庙机房</option>
                                     <option value="">东风机房</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group" style="float:right">
-                            <input id="cmd" name="cmd" placeholder="search" type="text" class="form-control" style="width: 200px;">
+                            <input id="cmd" name="cmd" placeholder="search" type="text" class="form-control" style="width:100px">
                             <button id='search_btn' type="submit" class="btn btn-sm btn-primary">
                                 - 搜索 -
                             </button>

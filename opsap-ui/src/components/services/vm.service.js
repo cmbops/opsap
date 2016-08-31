@@ -4,7 +4,7 @@
 require('../../baseService');
 
 
-var COMMON_URL = ''
+var COMMON_URL = require('../../apiurl.js');
 var vmservice = angular.module('vmService', ['baseService']);
 
 vmservice.factory('VMService', ['$rootScope', 'BaseService', function($rootScope, BaseService){
@@ -30,7 +30,7 @@ vmservice.factory('VMService', ['$rootScope', 'BaseService', function($rootScope
 	}
 
 	function SetNewGenerate(selected) {
-		return BaseService.POST( COMMON_URL + '/generate', {ids: selected});
+		return BaseService.POST( COMMON_URL.vmresource.prepare_order_resource, {ids: selected});
 	}
 
 }])

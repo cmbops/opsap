@@ -102,13 +102,13 @@ baseservice.factory('AuthenticationService', ['$rootScope', function($rootScope)
 }])
 
 
-//认证拦截service，判断是非登录
+//认证拦截service，判断是否登录
 baseservice.factory('TokenInterceptor', ['$q', '$window', '$location', 'AuthenticationService', function($q, $window, $location, AuthenticationService){
 	return {
 		request: function(config) {
 			config.headers = config.headers || {};
 			if($window.sessionStorage.token) {
-				config.headers.Authorization = 'Bearer' + $window.sessionStorage.token
+				config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token
 			}
 
 			return config;

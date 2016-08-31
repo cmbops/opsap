@@ -49,7 +49,8 @@ opsap.config(require('./router-config'))
 opsap.run(['$rootScope', '$state', '$window','AuthenticationService', function($rootScope, $state, $window, AuthenticationService){
 	$rootScope.$on('$stateChangeStart', 
 		function(event, toState, toParams, fromState, fromParams){
-			if(toState != null && toParams.data != null && toParams.data.requireLogin && !AuthenticationService.isLogged && !$window.sessonStorage.token){
+			console.log('%o || %o || %o', toState, fromState, AuthenticationService);
+			if(toState != null && toState.data != null && toState.data.requireLogin && !AuthenticationService.isLogged ){
 				event.preventDefault();
 				$state.go('login');
 			}

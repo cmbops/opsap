@@ -33,8 +33,8 @@
 /**
  * ES6 style
  */
-const $inject = ['$scope', '$rootScope', '$state', '$window', 'UserService'];
-const LoginController = function($scope, $rootScope, $state, $window, UserService) {
+const $inject = ['$scope', '$rootScope', '$state', '$window', 'UserService', 'AuthenticationService'];
+const LoginController = function($scope, $rootScope, $state, $window, UserService, AuthenticationService) {
 	var vm = this;
 	vm.loginPage = true;
 	vm.user = {};
@@ -56,6 +56,7 @@ const LoginController = function($scope, $rootScope, $state, $window, UserServic
 		.then(function(result) {
 			if(result.data.id_token) {
 				$window.sessionStorage.token = result.data.id_token;
+				AuthenticationService.isLogged = true;
 				$state.go('index');
 			} else {
 				$rootScope.$broadcast('alert', '账号不存在，或者密码错误');
