@@ -33,7 +33,7 @@
                         <div class="form-group" id="date_5">
                             <div class="input-daterange input-group" id="datepicker">
                                 <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="dt" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width:100px"/>
+                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="dd" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width:100px"/>
                                     <span class="input-group-btn">
             <button type="button" class="btn btn-xs btn-success" ng-click="open2()"><i class="fa fa-calendar"></i></button>
           </span>
@@ -103,8 +103,12 @@
                     </table>
                     <div class="row">
                         <div class="col-sm-6">
+                            <div class="dataTables_info" id="editable_info" role="status" aria-live="polite">
+                            </div>
                         </div>
-                        {% include 'paginator.html' %}
+                        <div class="col-sm-6">
+                            <ul uib-pagination total-items="user.totalItems" ng-model="user.currentPage" style="float:right"></ul>
+                        </div>
                     </div>
                 </div>
             </div>

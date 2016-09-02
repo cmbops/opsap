@@ -1,7 +1,18 @@
 /**
  * router config for opsap
+ * 路由控制
  */
 const COMMON_URL = '/src/components';
+const usertemplates = {list:require('./components/user/user_list.html'), add:require('./components/user/user_add.html')};
+const usergrouptemplates = {list:require('./components/user/group_list.html'), add:require('./components/user/group_add.html')};
+const vmtemplates = {apply:require('./components/vmmanager/vmresource_apply.html'), 
+                     list:require('./components/vmmanager/vmresource_list.html'),
+                     manage: require('./components/vmmanager/vmresource_manage.html'),
+                     verify: require('./components/vmmanager/vmresource_verify.html')
+                 }
+const Page404 = '<h1>404 page not found</h1>'
+/*const userlistTmp = require('./components/user/user_list.html');
+const useraddTmp = require('./components/user/user_add.html');*/
 const $inject = ['$stateProvider', '$urlRouterProvider'];
 const routerConfig = function($stateProvider,  $urlRouterProvider) {
 
@@ -23,29 +34,38 @@ const routerConfig = function($stateProvider,  $urlRouterProvider) {
 	  })
 	  .state('index.user', {
 	  	  url: '/user/:operation',
-	  	  templateUrl: function($stateParams) {
-	  	  	return COMMON_URL + '/user/user_' + $stateParams.operation + '.html'
-	  	  },
+	  	  templateProvider: ['$timeout', '$stateParams',function($timeout, $stateParams) {
+	  	  	return $timeout(function() {
+	  	  		return getTmp(usertemplates, $stateParams.operation);
+	  	  	}, 100)
+	  	  }],
 	  	  controller:'UserController as user'
 	  })
 	  .state('index.usergroup', {
 	  	url: '/usergroup/:operation',
-	  	templateUrl: function($stateParams) {
-	  		return COMMON_URL +
-	  		 '/user/group_' + $stateParams.operation + '.html'
-	  	},
+	  	templateProvider: ['$timeout', '$stateParams',function($timeout, $stateParams) {
+	  	  	return $timeout(function() {
+	  	  		return getTmp(usergrouptemplates, $stateParams.operation);
+	  	  	}, 100)
+	  	  }],
 	  	controller: 'UserGroupController as usergroup'
 	  })
 	  .state('index.vmmanager', {
 	  	url: '/vmmanager/:operation',
-	  	templateUrl: function($stateParams) {
-	  		return COMMON_URL + '/vmmanager/vmresource_' + $stateParams.operation + '.html'
-	  	}
+	  	templateProvider: ['$timeout', '$stateParams',function($timeout, $stateParams) {
+	  	  	return $timeout(function() {
+	  	  		return getTmp(vmtemplates, $stateParams.operation);
+	  	  	}, 100)
+	  	  }],
 	  })
 	  .state('index.datamanager', {
 	  	url: '/datamanager',
 	  	template: require('./components/datamanager/data_list.html')
 	  })
+
+	  function getTmp(templates, operation) {
+	  	return templates[operation] ? templates[operation] : Page404;
+	  }
 }
 
 routerConfig.$inject = $inject;

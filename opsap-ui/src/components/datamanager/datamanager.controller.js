@@ -4,7 +4,8 @@
 
 const $inject = ['$scope', '$rootScope', '$stateParams', '$state', '$window'];
 const DatamanagerController = function($scope, $rootScope,  $stateParams, $state, $window) {
-	$scope.today = function() {
+	
+  $scope.today = function() {
     $scope.dt = new Date();
   };
   $scope.today();

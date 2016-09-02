@@ -22,7 +22,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">环境类型:&nbsp;</label>
                                     <div class="dropdown col-sm-10">
-                                        <button class="btn btn-sm btn-info dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" id="env_list">
+                                        <button class="btn btn-sm btn-info dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" id="env_list" style="height:30px">
                                             {{vmapply.ApplyForm.env_type}}
                                             <span class="caret"></span>
                                         </button>
@@ -36,31 +36,31 @@
                                 <div class="form-group" style="margin-bottom:5px">
                                     <label class="col-sm-2 control-label">主机类型:&nbsp;</label>
                                     <div class="btn-group col-sm-10">
-                                        <label class="btn btn-sm btn-info normal-type active" ng-model="vmapply.ApplyForm.fun_type" uib-btn-radio="'normal'">普通型</label>
-                                        <label class="btn btn-sm btn-info was-type" ng-model="vmapply.ApplyForm.fun_type" uib-btn-radio="'was'">内存型</label>
-                                        <label class="btn btn-sm btn-info database-type" ng-model="vmapply.ApplyForm.fun_type" uib-btn-radio="'database'">I/O密集型</label>
+                                        <label class="btn btn-sm btn-info type" ng-model="vmapply.ApplyForm.fun_type" uib-btn-radio="'normal'" activeClass="typeactive">普通型</label>
+                                        <label class="btn btn-sm btn-info type" ng-model="vmapply.ApplyForm.fun_type" uib-btn-radio="'highmemory'" activeClass="typeactive">内存型</label>
+                                        <label class="btn btn-sm btn-info type" ng-model="vmapply.ApplyForm.fun_type" uib-btn-radio="'highIO'" activeClass="typeactive">I/O密集型</label>
                                     </div>
                                 </div>
                                 <div class="form-group" style="margin-bottom:5px">
                                     <label class="col-sm-2 control-label">CPU:&nbsp;</label>
                                     <div class="btn-group col-sm-10" data-toggle="buttons">
-                                        <label class="btn btn-sm  btn-info active" ng-model="vmapply.ApplyForm.cpu" uib-btn-radio="'2'">2C</label>
-                                        <label class="btn btn-sm  btn-info" ng-model="vmapply.ApplyForm.cpu" uib-btn-radio="'4'">4C</label>
+                                        <label class="btn btn-sm  btn-info type" ng-model="vmapply.ApplyForm.cpu" uib-btn-radio="2" activeClass="active">2C</label>
+                                        <label class="btn btn-sm  btn-info type" ng-model="vmapply.ApplyForm.cpu" uib-btn-radio="4" activeClass="active">4C</label>
                                     </div>
                                 </div>
                                 <div class="form-group" style="margin-bottom:5px">
                                     <label class="col-sm-2 control-label">内存:&nbsp;</label>
                                     <div class="btn-group col-sm-10" data-toggle="buttons">
-                                        <label class="btn btn-sm  btn-info" ng-model="vmapply.ApplyForm.memory" uib-btn-radio="'2'">2G</label>
-                                        <label class="btn btn-sm  btn-info active" ng-model="vmapply.ApplyForm.memory" uib-btn-radio="'4'">4G</label>
-                                        <label class="btn btn-sm  btn-info" ng-model="vmapply.ApplyForm.memory" uib-btn-radio="'8'">8G</label>
-                                        <label class="btn btn-sm  btn-info" ng-model="vmapply.ApplyForm.memory" uib-btn-radio="'16'">16G</label>
+                                        <label class="btn btn-sm  btn-info type" ng-model="vmapply.ApplyForm.memory" uib-btn-radio="2" activeClass="active">2G</label>
+                                        <label class="btn btn-sm  btn-info type" ng-model="vmapply.ApplyForm.memory" uib-btn-radio="4" activeClass="active">4G</label>
+                                        <label class="btn btn-sm  btn-info type" ng-model="vmapply.ApplyForm.memory" uib-btn-radio="8" activeClass="active">8G</label>
+                                        <label class="btn btn-sm  btn-info type" ng-model="vmapply.ApplyForm.memory" uib-btn-radio="16" activeClass="active">16G</label>
                                     </div>
                                 </div>
                                 <div class="form-group" style="margin-bottom:5px">
                                     <label class="col-sm-2 control-label">操作系统:&nbsp;</label>
                                     <div class="dropdown col-sm-10">
-                                        <button class="btn btn-sm btn-info dropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" id="os_list">
+                                        <button class="btn btn-sm btn-info dropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" id="os_list" style="height:30px">
                                             {{vmapply.ApplyForm.OS_type}}
                                             <span class="caret"></span>
                                         </button>
@@ -140,7 +140,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-5 col-sm-7">
-                                    <button type="submit" class="btn btn-default" id="save_btn">保存</button>
+                                    <button type="button" class="btn btn-default" id="save_btn" ng-click="vmapply.saveApply()">保存</button>
                                     <button type="submit" class="btn btn-info" id="submit_btn" ng-disabled="userapply.$invalid || vmapply.ApplyForm.OS_type == '选择' || vmapply.ApplyForm.env_type == '选择'">提交</button>
                                 </div>
                             </div>

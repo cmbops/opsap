@@ -5,6 +5,7 @@ const VmManageController = function($scope, $rootScope, $state, $stateParams, Se
 	               {id:2, appro_os_type:'LUX', ipaddress:'192.168.7.2', loc_cluster_name: 'hGff5d', loc_storage_name: 'Yifdf', gen_log: 'success'},
 	               {id:3, appro_os_type:'SUSE', ipaddress:'192.168.7.2', loc_cluster_name: 'hGff5d', loc_storage_name: 'Yifdf', gen_log: 'success'}];
     vm.selected = [];
+    vm.isSelected = SelectService.isSelected;
     vm.setSelectAll = SelectService.setSelectAll;
     vm.updateSelection = SelectService.updateSelection;
     vm.generateResource = generateResource;

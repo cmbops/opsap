@@ -18,13 +18,13 @@ baseservice.factory('BaseService', ['$rootScope', '$http', '$q', function($rootS
 	}
 
 	function POST(url, params) {
-		return $http.post(url, params);
+		return $http.post(url, params, {'Conten-Type': 'application/x-wwww-form-urlencoded'});
 	}
 
 	function JSONP(url, params) {
 		return $http({
 			method: 'JSONP',
-			url: url,
+			url: url + '?callback=JSON_CALLBACK',
 			params: params
 		})
 	}

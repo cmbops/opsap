@@ -519,6 +519,9 @@ fieldset[disabled] .btn-success.active {
 .open .dropdown-toggle.btn-info {
   background-image: none;
 }
+.type.active{
+  padding-bottom: 8px;
+}
 .btn-info.disabled,
 .btn-info.disabled:hover,
 .btn-info.disabled:focus,

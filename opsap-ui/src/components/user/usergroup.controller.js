@@ -13,6 +13,7 @@ const UserGroupController = function($scope, $rootScope, $state, $stateParams, U
 	vm.updateSelection = updateSelection;
 	vm.isSelected = isSelected;
 	vm.setSelectAll = setSelectAll;
+	vm.deleteSelect = deleteSelect;
 	activeUserList();
 
     if($stateParams.operation === 'list') {
@@ -40,6 +41,11 @@ const UserGroupController = function($scope, $rootScope, $state, $stateParams, U
 		UserManagementService.addUserGroup(params).then(function(result) {
 
 		})
+	}
+
+	//删除选择用户组
+	function deleteSelect(selected) {
+		console.log(selected.join(','));
 	}
 
 	//选择删除

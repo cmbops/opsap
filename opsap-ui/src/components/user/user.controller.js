@@ -14,6 +14,7 @@ const UserController = function($scope, $rootScope,  $stateParams, $state, $wind
     vm.totalItems = 3;
     vm.currentPage = 1;
 	vm.selected = [];
+	vm.isSelected = SelectService.isSelected;
 	vm.setSelectAll = SelectService.setSelectAll;
 	vm.updateSelection = SelectService.updateSelection;
 	vm.deleteUser = deleteUser;
