@@ -8,6 +8,7 @@ require('./assets/css/material-kit.css')
 require('./assets/css/style.css')
 require('./assets/css/rzslider.min.css')
 require('./assets/css/font-awesome.min.css')
+require('./assets/css/animate.css')
 
 
 

@@ -26,8 +26,8 @@ module.exports = {
 	datamanage: {
 		get_app_list: DOMAIN_URL + 'odata/app/list', //
 		get_calendar: DOMAIN_URL + 'odata/calendar/list', //
-		get_datasource_list: DOMAIN_URL + 'odata/datasource/list',
-		get_format_daily: DOMAIN_URL + 'odata/format/daily', //post yyyy-mm-dd,
-		get_format_size: DOMAIN_URL + 'odata/format/size', //yyyy,yyyy-mm,yyyy-mm-dd,ALL [,隔开]
+		post_datasource_list: DOMAIN_URL + 'odata/datasource/list',
+		post_format_daily: DOMAIN_URL + 'odata/format/daily', //post yyyy-mm-dd,
+		post_format_size: DOMAIN_URL + 'odata/format/size', //yyyy,yyyy-mm,yyyy-mm-dd,ALL [,隔开]
 	}
 }

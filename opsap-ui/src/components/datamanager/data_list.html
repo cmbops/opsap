@@ -1,4 +1,4 @@
-<div class="wrapper wrapper-content animated fadeInRight" ng-controller="DatamanagerController">
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="DatamanagerController as datactrl">
     <div class="row">
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
@@ -17,12 +17,13 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <form class="form-inline" action="" method="get">
+                <pre>{{datactrl.selectForm}} </pre>
+                    <form class="form-inline" name="searchdata" ng-submit="datactrl.searchForm(datactrl.selectForm)">
                     
                         <div class="form-group" id="date_5">
                             <div class="input-daterange input-group" id="datepicker">
                                 <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width:100px"/>
+                                    <input type="text" name="startdate" class="form-control" uib-datepicker-popup ng-model="datactrl.selectForm.startdate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width:100px"/>
                                     <span class="input-group-btn">
             <button type="button" class="btn btn-xs btn-success" ng-click="open1()"><i class="fa fa-calendar"></i></button>
           </span>
@@ -33,7 +34,7 @@
                         <div class="form-group" id="date_5">
                             <div class="input-daterange input-group" id="datepicker">
                                 <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="dd" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width:100px"/>
+                                    <input type="text" name="enddate" class="form-control" uib-datepicker-popup ng-model="datactrl.selectForm.enddate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width:100px"/>
                                     <span class="input-group-btn">
             <button type="button" class="btn btn-xs btn-success" ng-click="open2()"><i class="fa fa-calendar"></i></button>
           </span>
@@ -42,34 +43,32 @@
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <select name="username" data-placeholder="全部文件" class="input-sm" tabindex="2" style="margin:0 10px 20px 0">
-                                    <option value="">opics文件</option>
-                                    <option value="">电子档案文件</option>
+                                <select name="filename" data-placeholder="全部文件" class="input-sm" tabindex="2" style="margin:0 10px 20px 0" ng-model="datactrl.selectForm.filename" ng-options="file.name as file.desc for file in datactrl.files">
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <select name="file_status" class="input-sm" tabindex="4" style="margin:0 10px 20px 0">
-                                    <option value="">文件存在</option>
-                                    <option value="">文件已删除</option>
+                                <select name="filestatus" class="input-sm" tabindex="4" style="margin:0 10px 20px 0" ng-model="datactrl.selectForm.filestatus">
+                                    <option value="exits">文件存在</option>
+                                    <option value="deleted">文件已删除</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <select name="emc" data-placeholder="车公庙机房" class="input-sm" tabindex="4" style="margin:0 10px 20px 0">
-                                    <option value="">车公庙机房</option>
-                                    <option value="">东风机房</option>
+                                <select name="emc" data-placeholder="车公庙机房" class="input-sm" tabindex="4" style="margin:0 10px 20px 0" ng-model="datactrl.selectForm.emc">
+                                    <option value="CGM">车公庙机房</option>
+                                    <option value="DF">东风机房</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group" style="float:right">
-                            <input id="cmd" name="cmd" placeholder="search" type="text" class="form-control" style="width:100px">
+                            <input id="cmd" name="cmd" placeholder="search" type="text" class="form-control" style="width:100px" ng-model="datactrl.selectForm.condition" ng-disabled="dt > dd">
                             <button id='search_btn' type="submit" class="btn btn-sm btn-primary">
                                 - 搜索 -
                             </button>
-                            <button id='search_btn' type="submit" class="btn btn-sm btn-success">
+                            <button id='search_btn' type="button" class="btn btn-sm btn-success" ng-click="exportXLS()">
                                 - 导出 -
                             </button>
                         </div>
@@ -89,14 +88,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="gradeX">
-                                <td class="text-center"> {{ post.id }} </td>
-                                <td class="text-center username"> {{ post.user }} </td>
-                                <td class="text-center ip"> {{ post.host }} </td>
-                                <td class="text-center remote_ip"> {{ post.remote_ip }} </td>
-                                <td class="text-center"> {{ post.login_type }} </td>
-                                <td class="text-center"><a href="{% url 'log_history' %}?id={{ post.id }}" class="log_command"> 统计 </a></td>
-                                <td class="text-center"><a value="{% url 'log_record' %}?id={{ post.id }}" class="log_record"> 回放 </a></td>
+                            <tr class="gradeX" ng-repeat="data in datactrl.backupdatas">
+                                <td class="text-center"> {{ data.id }} </td>
+                                <td class="text-center username"> {{ data.user }} </td>
+                                <td class="text-center ip"> {{ data.host }} </td>
+                                <td class="text-center remote_ip"> {{ data.remote_ip }} </td>
+                                <td class="text-center"> {{ data.login_type }} </td>
+                                <td class="text-center">{{data.time}}</td>
+                                <td class="text-center">{{data.filename}}</td>
                                 <td class="text-center start_time"> </td>
                             </tr>
                         </tbody>

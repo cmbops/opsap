@@ -2,17 +2,24 @@
  * datamanagercontroller
  */
 
-const $inject = ['$scope', '$rootScope', '$stateParams', '$state', '$window'];
-const DatamanagerController = function($scope, $rootScope,  $stateParams, $state, $window) {
+const $inject = ['$scope', '$rootScope', '$stateParams', '$state', '$window', 'BackupdataService'];
+const DatamanagerController = function($scope, $rootScope,  $stateParams, $state, $window, BackupdataService) {
 	
-  $scope.today = function() {
-    $scope.dt = new Date();
-  };
-  $scope.today();
+  var vm = this;
+  vm.files = [{name:'opics', desc:'opics文件'}, {name:'dzda', desc:'电子档案'}];
+  
+  vm.selectForm = {};
+  vm.selectForm.enddate = new Date();
+  vm.selectForm.filename = vm.files[0].name;
+  vm.selectForm.filestatus = 'exits';
+  vm.selectForm.emc = 'CGM';
+  vm.searchForm = searchForm;
 
-  $scope.clear = function() {
-    $scope.dt = null;
-  };
+  function searchForm(form) {
+    BackupdataService.getBackupData.then(function(result) {
+      vm.backupdatas = result;
+    })
+  }
 
   $scope.inlineOptions = {
     customClass: getDayClass,
@@ -51,7 +58,7 @@ const DatamanagerController = function($scope, $rootScope,  $stateParams, $state
   };
 
   $scope.setDate = function(year, month, day) {
-    $scope.dt = new Date(year, month, day);
+    $scope.enddate = new Date(year, month, day);
   };
 
   $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
