@@ -2,9 +2,13 @@
  * controller of dailycheck
  */
 
-const DataDailycheckController = function($rootScope, $scope, BackupdataService){
+const DataDailycheckController = function($rootScope, $scope, BackupdataService, SelectService){
     this.today = new Date();
-    
+    this.selected = [];
+    this.isSelected = SelectService.isSelected;
+    this.setSelectAll = SelectService.setSelectAll;
+    this.updateSelection = SelectService.updateSelection;
+
     $scope.inlineOptions = {
     customClass: getDayClass,
     minDate: new Date(),
@@ -84,5 +88,5 @@ const DataDailycheckController = function($rootScope, $scope, BackupdataService)
   }
 }
 
-DataDailycheckController.$inject = ['$rootScope', '$scope', 'BackupdataService'];
+DataDailycheckController.$inject = ['$rootScope', '$scope', 'BackupdataService', 'SelectService'];
 module.exports = DataDailycheckController;

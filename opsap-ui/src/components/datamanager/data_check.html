@@ -49,7 +49,7 @@
                     <thead>
                          <tr>
                         <th class="text-center">
-                            <input type="checkbox">
+                            <input type="checkbox" name="seletall" id="selectall" ng-click="datacheck.setSelectAll($event, datacheck.dailydatas, datacheck.selected)">
                         </th>
                         <th class="text-center">应用名称</th>
                         <th class="text-center">文件名称</th>
@@ -60,24 +60,28 @@
                     </thead>
                    <tbody>
                        <tr class="gradeX" ng-repeat="data in datacheck.dailydatas">
-                           <td class="text-center"><input type="checkbox"></td>
+                           <td class="text-center"><input 
+                                                    value="{{data.id}}" 
+                                                    type="checkbox"
+                                                    ng-checked="datacheck.isSelected(data.id, data.selected)" 
+                                                    ng-click="datacheck.updateSelection($event, data.id, datacheck.selected)"></td>
                            <td class="text-center">{{data.appname}}</td>
                            <td class="text-center">{{data.filename}}</td>
                            <td class="text-center">{{data.file}}</td>
                            <td class="text-center">{{data.status}}</td>
-                           <td class="text-center"><button class="btn btn-sm btn-primary" ng-click="sync($event)">刷新</button></td>
+                           <td class="text-center"><button class="btn btn-sm btn-primary" ng-click="sync(data.id)">刷新</button></td>
                        </tr>
                    </tbody>
                 </table>
                 <div class="row">
                         <div class="col-sm-6">
                             <div class="col-sm-12" id="editable_info" role="status" aria-live="polite">
-                                <button class="btn btn-sm btn-primary" ng-click="syncSelect()">刷新</button>              
+                                <button class="btn btn-sm btn-primary" ng-click="syncSelect(datacheck.selected)">刷新</button>              
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                                 <div style="width:10px;height:10px;background-color:red"></div><span>文件异常</span>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                                 <div style="width:10px;height:10px;background-color:blue"></div><span>文件正常</span>
                             </div>
                         </div>
