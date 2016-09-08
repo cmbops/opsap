@@ -1,0 +1,91 @@
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="DataDailyChekController as datacheck">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title" id="ibox-content">
+                    <h5>每日备份情况检查表</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <a  class="close-link">
+                            <i class="fa-fa-times"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="ibox-content">
+                <form class="form-inline" ng-submit="">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span>检查日期</span>
+                            <input type="text" name="checkdate" class="form-control" uib-datepicker-popup ng-model="datacheck.today"  is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width:100px" >
+                             <span class="input-group-btn">
+            <button type="button" class="btn btn-xs btn-success" ng-click="open1()"><i class="fa fa-calendar"></i></button>
+          </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="float:right">
+                        <div class="input-group">
+                            <span>文件总数:17 &nbsp; </span>
+                            <span>异常数量:5  &nbsp; </span>
+                            <span>今日大小: 6.77GB  &nbsp;</span>
+                        </div>
+                        <button id="syncBtn" class="btn btn-sm btn-primary">
+                            - 同步 -
+                        </button>
+                        <button id="exportXLS" class="btn btn-sm btn-success">
+                            - 导出 -
+                        </button>
+                    </div>
+                </form>
+
+                <table class="table table-striped table-bordered table-hover" style="margin-top:20px">
+                    <thead>
+                         <tr>
+                        <th class="text-center">
+                            <input type="checkbox">
+                        </th>
+                        <th class="text-center">应用名称</th>
+                        <th class="text-center">文件名称</th>
+                        <th class="text-center">文件大小</th>
+                        <th class="text-center">文件状态</th>
+                        <th class="text-center">操作</th>
+                    </tr>
+                    </thead>
+                   <tbody>
+                       <tr class="gradeX" ng-repeat="data in datacheck.dailydatas">
+                           <td class="text-center"><input type="checkbox"></td>
+                           <td class="text-center">{{data.appname}}</td>
+                           <td class="text-center">{{data.filename}}</td>
+                           <td class="text-center">{{data.file}}</td>
+                           <td class="text-center">{{data.status}}</td>
+                           <td class="text-center"><button class="btn btn-sm btn-primary" ng-click="sync($event)">刷新</button></td>
+                       </tr>
+                   </tbody>
+                </table>
+                <div class="row">
+                        <div class="col-sm-6">
+                            <div class="col-sm-12" id="editable_info" role="status" aria-live="polite">
+                                <button class="btn btn-sm btn-primary" ng-click="syncSelect()">刷新</button>              
+                            </div>
+                            <div class="col-sm-2">
+                                <div style="width:10px;height:10px;background-color:red"></div><span>文件异常</span>
+                            </div>
+                            <div class="col-sm-2">
+                                <div style="width:10px;height:10px;background-color:blue"></div><span>文件正常</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <ul uib-pagination total-items="user.totalItems" ng-model="user.currentPage" style="float:right"></ul>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

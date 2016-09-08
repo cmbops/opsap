@@ -1,37 +1,11 @@
 /**
- * datamanagercontroller
+ * controller of dailycheck
  */
 
-const $inject = ['$scope', '$rootScope', '$stateParams', '$state', '$window', '$filter', 'BackupdataService'];
-const DatamanagerController = function($scope, $rootScope,  $stateParams, $state, $window, $filter, BackupdataService) {
-	
-  var vm = this;
-  var dateFilter = $filter('date');
-  vm.files = [{name:'opics', desc:'opics文件'}, {name:'dzda', desc:'电子档案'}];
-  
-  vm.selectForm = {};
-  vm.enddate = new Date();
-  vm.selectForm.filename = vm.files[0].name;
-  vm.selectForm.filestatus = 'exits';
-  vm.selectForm.emc = 'CGM';
-  vm.searchForm = searchForm;
-  
-  $scope.$watch('datactrl.startdate', function(nV, oV) {
-    vm.selectForm.startdate = nV ? dateFilter(nV, 'yyyy-MM-dd') : new Date();
-  })
-
-  $scope.$watch('datactrl.enddate', function(nV, oV) {
-    vm.selectForm.enddate = dateFilter(nV, 'yyyy-MM-dd');
-  })
- 
-
-  function searchForm(form) {
-    BackupdataService.getBackupData.then(function(result) {
-      vm.backupdatas = result;
-    })
-  }
-
-  $scope.inlineOptions = {
+const DataDailycheckController = function($rootScope, $scope, BackupdataService){
+    this.today = new Date();
+    
+    $scope.inlineOptions = {
     customClass: getDayClass,
     minDate: new Date(),
     showWeeks: true
@@ -63,12 +37,9 @@ const DatamanagerController = function($scope, $rootScope,  $stateParams, $state
     $scope.popup1.opened = true;
   };
 
-  $scope.open2 = function() {
-    $scope.popup2.opened = true;
-  };
 
   $scope.setDate = function(year, month, day) {
-    $scope.enddate = new Date(year, month, day);
+    $scope.today = new Date(year, month, day);
   };
 
   $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
@@ -76,10 +47,6 @@ const DatamanagerController = function($scope, $rootScope,  $stateParams, $state
   $scope.altInputFormats = ['M!/d!/yyyy'];
 
   $scope.popup1 = {
-    opened: false
-  };
-
-  $scope.popup2 = {
     opened: false
   };
 
@@ -116,5 +83,6 @@ const DatamanagerController = function($scope, $rootScope,  $stateParams, $state
     return '';
   }
 }
- DatamanagerController.$inject = $inject;
- module.exports = DatamanagerController;
+
+DataDailycheckController.$inject = ['$rootScope', '$scope', 'BackupdataService'];
+module.exports = DataDailycheckController;

@@ -10,6 +10,9 @@ const vmtemplates = {apply:require('./components/vmmanager/vmresource_apply.html
                      manage: require('./components/vmmanager/vmresource_manage.html'),
                      verify: require('./components/vmmanager/vmresource_verify.html')
                  }
+const dmtemplates = {list: require('./components/datamanager/data_list.html'),
+                     check: require('./components/datamanager/data_check.html')    
+				}
 const Page404 = '<h1>404 page not found</h1>'
 /*const userlistTmp = require('./components/user/user_list.html');
 const useraddTmp = require('./components/user/user_add.html');*/
@@ -59,8 +62,12 @@ const routerConfig = function($stateProvider,  $urlRouterProvider) {
 	  	  }],
 	  })
 	  .state('index.datamanager', {
-	  	url: '/datamanager',
-	  	template: require('./components/datamanager/data_list.html')
+	  	url: '/datamanager:operation',
+		templateProvider: ['$timeout', '$stateParams',function($timeout, $stateParams) {
+	  	  	return $timeout(function() {
+	  	  		return getTmp(dmtemplates, $stateParams.operation);
+	  	  	}, 100)
+	  	  }]
 	  })
 
 	  function getTmp(templates, operation) {

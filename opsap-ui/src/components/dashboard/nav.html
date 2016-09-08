@@ -48,10 +48,14 @@
                     </ul>
                 </li>
                 <li id='datamanager'>
-                    <a ui-sref="index.datamanager"><i class="fa fa-briefcase"></i> <span class="nav-label">数据库管理</span><span class="label label-info pull-right"></span></a>
+                    <a role="button" data-toggle="collapse" data-target="#dmmenu" aria-expanded="false" aria-controls="#dmmenu"><i class="fa fa-magnet"></i> <span class="nav-label">数据备份管理</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse" id="dmmenu">
+                        <li class="list"><a ui-sref="index.datamanager({operation:'list'})">查看数据备份</a></li>
+                        <li class="check"><a ui-sref="index.datamanager({operation:'check'})">每日备份<span class="label label-primary pull-right">17</span><span class="label label-danger pull-right">4</span></a></li>
+                    </ul>
                 </li>
                 <li id='databackup'>
-                    <a href="#"><i class="fa fa-magnet"></i> <span class="nav-label">数据备份</span><span class="label label-info pull-right"></span></a>
+                    <a href="#"><i class="fa fa-database"></i> <span class="nav-label">数据库管理</span><span class="label label-info pull-right"></span></a>
                 </li>
                 <li id='netmanager'>
                     <a href="#"><i class="fa fa-tasks"></i> <span class="nav-label">网络管理</span><span class="label label-info pull-right"></span></a>
