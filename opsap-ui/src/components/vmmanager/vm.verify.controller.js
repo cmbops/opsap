@@ -12,6 +12,7 @@ const VmVerifyController = function($scope, $rootScope, $uibModal, $log, $transc
 	vm.totalItems = 2;
     vm.currentPage = 1;
 	vm.open = open;
+	vm.turnback = turnback;
 	vm.pageChanged = function() {
     $log.log('Page changed to: ' + $scope.currentPage);
   };
@@ -44,6 +45,20 @@ const VmVerifyController = function($scope, $rootScope, $uibModal, $log, $transc
 		}, function () {
 			$log.info('Modal dismiss at' + new Date());
 		});
+	}
+
+	function turnback(id) {
+		var returnbackModalInstance = $uibModal.open({
+			animation: true,
+			template: require('./modal/vm.turnback.modal.html'),
+			controller: 'TurnbackController',
+			controllerAs: '$tbctrl',
+			resolve: {
+				id: function() {
+					return id;
+				}
+			}
+		})
 	}
 }
 

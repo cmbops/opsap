@@ -79,7 +79,7 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
-                                            <ul uib-pagination total-items="user.totalItems" ng-model="user.currentPage" style="float:right"></ul>
+                                            <ul uib-pagination total-items="user.totalItems" items-per-page="20" max-size="4" force-eclipses="true" next-text="后一页" previous-text="前一页" ng-model="user.currentPage" ng-change="user.pageChanged()" style="float:right"></ul>
                                         </div>
                             </div>
                 </div>

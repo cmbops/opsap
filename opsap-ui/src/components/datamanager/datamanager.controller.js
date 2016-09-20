@@ -15,6 +15,18 @@ const DatamanagerController = function($scope, $rootScope,  $stateParams, $state
   vm.selectForm.filestatus = 'exits';
   vm.selectForm.emc = 'CGM';
   vm.searchForm = searchForm;
+  // vm.exportExcel = exportExcel;
+
+  // function exportExcel() {
+  //   BackupdataService.getBackupData
+  //     .then(function(result) {
+  //       var anchor = angular.element('<a/>');
+  //       anchor.attr({
+  //         href: 'data:attachment/xlsx;charset=utf-8,' + encodeURI(result.data),
+  //         target: '_blank'
+  //       })[0].click();
+  //   })
+  // }
   
   $scope.$watch('datactrl.startdate', function(nV, oV) {
     vm.selectForm.startdate = nV ? dateFilter(nV, 'yyyy-MM-dd') : new Date();

@@ -10,14 +10,10 @@ require('./assets/css/rzslider.min.css')
 require('./assets/css/font-awesome.min.css')
 require('./assets/css/animate.css')
 
-
-
 //angular依赖
 require('angular-ui-router');
 require('angular-ui-bootstrap');
 require('./baseService');
-
-var angular = require('angular');
 
 var opsap = angular.module('opsap', [
 	'ui.router',
@@ -50,8 +46,8 @@ opsap.config(require('./router-config'))
 opsap.run(['$rootScope', '$state', '$window','AuthenticationService', function($rootScope, $state, $window, AuthenticationService){
 	$rootScope.$on('$stateChangeStart', 
 		function(event, toState, toParams, fromState, fromParams){
-			console.log('%o || %o || %o', toState, fromState, $window.localStorage);
-			if(toState != null && toState.data != null && toState.data.requireLogin && !AuthenticationService.isLogged && !$window.localStorage.token){
+			console.log('%o || %o || %o', toState, fromState, $window.sessionStorage);
+			if(toState != null && toState.data != null && toState.data.requireLogin && !AuthenticationService.isLogged && !$window.sessionStorage.token){
 				event.preventDefault();
 				$state.go('login');
 			}

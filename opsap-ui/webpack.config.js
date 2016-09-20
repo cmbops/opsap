@@ -4,7 +4,7 @@ var htmlWebpackPlugin = require('html-webpack-plugin')
 
 var config = {
   entry: {
-  	vendor: ['jquery','angular','angular-ui-router'],
+  	vendor: ['jquery','angular','angular-ui-router', 'echarts'],
   	app: './src/main.js'
   },
   output: {
@@ -69,7 +69,9 @@ var config = {
     //暴露全局变量
     new webpack.ProvidePlugin({
     	$: 'jquery',
-    	jQuery: 'jquery'
+    	jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      'window.$': 'jquery'
     })
   ],
   resolve: {

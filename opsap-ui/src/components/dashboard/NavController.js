@@ -2,7 +2,7 @@
  * navbar
  */
 const $inject = ['$scope'];
-const NavController = function($scope) {
+const NavController = function($scope, $window) {
 	this.title = 'index';
 }
 

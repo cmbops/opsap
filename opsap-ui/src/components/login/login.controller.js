@@ -55,7 +55,7 @@ const LoginController = function($scope, $rootScope, $state, $window, UserServic
 		UserService.login(vm.user.username, vm.user.password)
 		.then(function(result) {
 			if(result.data.id_token) {
-				$window.localStorage.token = result.data.id_token;
+				$window.sessionStorage.token = result.data.id_token;
 				AuthenticationService.isLogged = true;
 				$state.go('index');
 			} else {

@@ -34,7 +34,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="content in contents">
+                                    <tr>
                                         <td class="text-center">{{ content.id}}</td>
                                         <td class="text-center">{{ content.env_type }}</td>
                                         <td class="text-center">{{ content.env_type }}</td>
@@ -45,8 +45,14 @@
                                         <td class="text-center">{{ content.apply_reason }}</td>
                                         <td class="text-center">{{ content.status }}</td>
                                         <td class="text-center">
-                                            <button type="button" class="btn btn-xs btn-info" data-toggle="popover" data-placement="top" title="IP及机器用户密码" >详细
+                                            <button type="button" uib-popover-template="vmverify.dynamincPopover.templateUrl" class="btn btn-xs btn-info"  popover-placement="top" title="IP及机器用户密码" >详细
                                             </button>
+                                            <sciprt type="text/ng-template" id="popoverTemplate.html">
+                                              <div>{{vmverify.dynamincPopover.content}}</div>
+                                              <div class="form-group">
+                                                  <label for="title">title</label>
+                                              </div>
+                                            </sciprt>
                                         </td>
                                     </tr>
                                 </tbody>

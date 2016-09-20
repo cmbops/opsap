@@ -35,6 +35,11 @@ const routerConfig = function($stateProvider,  $urlRouterProvider) {
 	  	  data: { requireLogin: true},
 	  	  controller: 'NavController as nav'
 	  })
+	  .state('index.dashboard', {
+	  	  url: '/dash',
+	  	  template: require('./components/dashboard/charts.html'),
+	  	  controller: 'NavController as nav'
+	  })
 	  .state('index.user', {
 	  	  url: '/user/:operation',
 	  	  templateProvider: ['$timeout', '$stateParams',function($timeout, $stateParams) {

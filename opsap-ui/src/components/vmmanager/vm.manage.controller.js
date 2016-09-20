@@ -9,6 +9,11 @@ const VmManageController = function($scope, $rootScope, $state, $stateParams, Se
     vm.setSelectAll = SelectService.setSelectAll;
     vm.updateSelection = SelectService.updateSelection;
     vm.generateResource = generateResource;
+	vm.dynamicPopover = {
+    content: 'Hello, World!',
+    templateUrl: 'myPopoverTemplate.html',
+    title: 'Title'
+  };
 
     function generateResource(selected) {
     	VMService.SetNewGenerate(selected).then(function(result) {

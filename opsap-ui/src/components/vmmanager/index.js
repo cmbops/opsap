@@ -10,6 +10,6 @@ module.exports = angular.module('opsap.vmmanager', ['settingService', 'vmService
                    .controller('VmApllyController', require('./vm.apply.controller'))
                    .controller('VmVerifyController', require('./vm.verify.controller'))
                    .controller('VerifyModalController', require('./vm.verifymodal.controller'))
+                   .controller('TurnbackController', require('./vm.verifyturnback.controller'))
                    .controller('VmManageController', require('./vm.manage.controller'))
-                   .directive('sliderBar', require('../directives/slider.directive'))
                    .directive('verifyTable', require('../directives/tablerender.directive'));

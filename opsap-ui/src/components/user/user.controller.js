@@ -11,8 +11,11 @@ const UserController = function($scope, $rootScope,  $stateParams, $state, $wind
     vm.userRole = [{value: 1, content: '普通用户'}, {value: 2, content: '管理员'}];
 	vm.userGroup = ['test', 'jhhh'];
     
-    vm.totalItems = 3;
+    vm.totalItems = 100;
     vm.currentPage = 1;
+	vm.pageChanged = function() {
+		console.log(vm.currentPage);
+	}
 	vm.selected = [];
 	vm.isSelected = SelectService.isSelected;
 	vm.setSelectAll = SelectService.setSelectAll;

@@ -34,29 +34,7 @@
                                                 <td class="text-center operate">
                                                     <div>
                                                         <button class="btn btn-success btn-xs agree-btn agree" ng-click="vmverify.open('lg', content.id)">同意</button>
-                                                        <button class="btn btn-danger btn-xs delete-btn" type="submit" id="delete" data-toggle="modal" data-target="#{{key.application_id}}delmodal">回退</button>
-                                                        <div class="modal fade" id="{{key.application_id}}delmodal" tabindex="-1" role="dialog">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                        <h4 class="modal-title">回退申请</h4>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <form>
-                                                                            <div class="form-group">
-                                                                                <label for="message-text" class="col-sm-2 control-label">回退原因:</label>
-                                                                                <textarea class="form-control" id="return-reason"></textarea>
-                                                                            </div>
-                                                                        </form>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                                                        <button type="button" class="btn btn-primary delete-cof-btn">退回</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <button class="btn btn-danger btn-xs delete-btn" ng-click="vmverify.turnback(content.id)">回退</button>
                                                     </div>
                                                 </td>
                                             </tr>

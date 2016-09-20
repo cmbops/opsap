@@ -1,0 +1,21 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">回退申请</h4>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label for="message-text" class="col-sm-2 control-label">回退原因:</label>
+                    <textarea class="form-control" ng-model="$tbctrl.turnbackreason"></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="$tbctrl.cancel()">关闭</button>
+            <button type="button" class="btn btn-primary delete-cof-btn" ng-click="$tbctrl.confReturnBack($tbctrl.id, $tbctrl.turnbackreason)">退回</button>
+        </div>
+        <div class="alert alert-warning text-center" ng-show="noticeMsg">{{ $tbctrl.noticeMsg }}</div>
+    </div>
+</div>
