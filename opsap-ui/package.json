@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "webpack": "webpack --progress --color --display-modules",
+    "webpack": "NODE_ENV=product webpack --progress --color --display-modules",
     "start": "webpack-dev-server --progress --color --inline --hot -d",
     "karma": "./node_modules/karma/bin/karma"
   },

@@ -54,6 +54,9 @@
                                                            ng-checked="vmmanage.isSelected(list.id, vmmanage.selected)" 
                                                            ng-click="vmmanage.updateSelection($event, list.id, vmmanage.selected)">
                                                 </td>
+                                                <td class="text-center">
+                                                     <button uib-popover-template="vmmanage.dynamicPopover.templateUrl" popover-title="{{vmmanage.dynamicPopover.title}}" type="button" class="btn btn-default">Popover With Template</button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

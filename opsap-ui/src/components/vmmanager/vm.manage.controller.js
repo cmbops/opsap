@@ -11,7 +11,7 @@ const VmManageController = function($scope, $rootScope, $state, $stateParams, Se
     vm.generateResource = generateResource;
 	vm.dynamicPopover = {
     content: 'Hello, World!',
-    templateUrl: 'myPopoverTemplate.html',
+    templateUrl: './modal/vm.popoverTemplate.html',
     title: 'Title'
   };
 

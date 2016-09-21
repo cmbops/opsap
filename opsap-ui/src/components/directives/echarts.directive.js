@@ -7,23 +7,53 @@ const echartDirective = function(){
 	return {
 		restrict: 'AE',
 		replace: true,
+		scope: {
+			title: '=',
+			getdata: '&'
+		},
 		link: function($scope, $element, $attr) {
-			console.log($element);
+		  var xData = $scope.getdata(),
+		      yData = $scope.getdata();
 	      var mainDiv = $element[0];
 		  var myChart = echarts.init(mainDiv);
-		  myChart.setOption({
-			  title: {text: 'EChart exm'},
-			  tooltip: {},
-			  xAxis: {
-				  data: ['tshirt', 'jouser', 'socks']
-			  },
-			  yAxis: {},
-			  series: [{
-				  name: 'selse',
-				  type: 'bar',
-				  data: [4, 9, 80]
-			  }]
-		  });
+		  var option =  {
+			      title: {text: 'EChart exm'},
+			      tooltip: {},
+			      xAxis: {
+			    	  data: xData
+			      },
+			      yAxis: {},
+			      series: [{
+			    	  name: 'selse',
+			    	  type: 'bar',
+			    	  data: yData
+			      }]
+				};
+		//   myChart.showLoading();
+		//   $scope.getdata()
+		//     .then(function(result) {
+		// 		angular.forEach(result.data, function(data, index) {
+		// 			xData.push(data.id);
+		// 			yData.push(data.dataVolume);
+		// 		});
+		// 		option = {
+		// 	      title: {text: 'EChart exm'},
+		// 	      tooltip: {},
+		// 	      xAxis: {
+		// 	    	  data: xData
+		// 	      },
+		// 	      yAxis: {},
+		// 	      series: [{
+		// 	    	  name: 'selse',
+		// 	    	  type: 'bar',
+		// 	    	  data: yData
+		// 	      }]
+		// 		}
+		// 		myChart.hideLoading();
+		// 	}).catch(function(err) {
+		// 		console.log(err);
+		// 	})
+		  myChart.setOption(option);
 		}
 	}
 }

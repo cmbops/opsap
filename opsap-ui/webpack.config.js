@@ -1,6 +1,8 @@
 var path = require('path');
 var webpack = require('webpack');
-var htmlWebpackPlugin = require('html-webpack-plugin')
+var htmlWebpackPlugin = require('html-webpack-plugin');
+
+var env = process.env.NODE_ENV ? process.env.NODE_ENV : 'dev';
 
 var config = {
   entry: {
@@ -49,13 +51,6 @@ var config = {
      ]
   },
   plugins: [
-    //uglify压缩
-    new webpack.optimize.UglifyJsPlugin({
-    	compress: {
-    		warnings: false
-    	}
-    }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
     //提取公共模块
     new webpack.optimize.CommonsChunkPlugin({
     	name: 'vendor',
@@ -81,8 +76,20 @@ var config = {
   	  'componentsUrl': path.resolve(__dirname, './src/components'),
   	  'bootstrap': 'bootstrap/dist/css/bootstrap.min.css'
   	}
-  },
-  devtool: "eval-source-map" 
+  } 
+}
+
+if(env === 'product') {
+  var minify = [    //uglify压缩
+    new webpack.optimize.UglifyJsPlugin({
+    	compress: {
+    		warnings: false
+    	}
+    }),
+    new webpack.optimize.OccurrenceOrderPlugin()];
+  config.plugins.concat(minify);
+} else {
+  config.devtool = "eval-source-map";
 }
 
 module.exports = config
