@@ -13,4 +13,3 @@ const NavController = function($scope, $window, VMService) {
 
 NavController.$inject = $inject;
 module.exports = NavController
-

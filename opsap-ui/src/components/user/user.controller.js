@@ -2,8 +2,8 @@
  * usercontroller
  */
 
-const $inject = ['$scope', '$rootScope', '$stateParams', '$state', '$window', 'UserManagementService', 'SelectService'];
-const UserController = function($scope, $rootScope,  $stateParams, $state, $window, UserManagementService, SelectService) {
+const $inject = ['$scope', '$rootScope', '$stateParams', '$state', '$window', '$timeout', 'UserManagementService', 'SelectService'];
+const UserController = function($scope, $rootScope,  $stateParams, $state, $window, $timeout, UserManagementService, SelectService) {
 	var vm = this;
 	vm.userForm = {};
     vm.username = '';
@@ -21,14 +21,18 @@ const UserController = function($scope, $rootScope,  $stateParams, $state, $wind
 	vm.setSelectAll = SelectService.setSelectAll;
 	vm.updateSelection = SelectService.updateSelection;
 	vm.deleteUser = deleteUser;
+	vm.loading = true;
 	$scope.$on('notice', function(event, text) {
 		vm.noticeMsg = text;
 	})
 	if($stateParams.operation === 'list') {
 		UserManagementService.getUsers().then(function(result) {
 			if(result.data) {
+				$timeout(function() {
+					vm.loading = false;
 				vm.users = result.data;
 				$rootScope.$broadcast('notice', 'success');
+				}, 2000);
 			}
 		})
 	} 

@@ -9,6 +9,7 @@ const VmManageController = function($scope, $rootScope, $state, $stateParams, Se
     vm.setSelectAll = SelectService.setSelectAll;
     vm.updateSelection = SelectService.updateSelection;
     vm.generateResource = generateResource;
+    vm.loading = true;
 	vm.dynamicPopover = {
     content: 'Hello, World!',
     templateUrl: './modal/vm.popoverTemplate.html',
@@ -18,6 +19,7 @@ const VmManageController = function($scope, $rootScope, $state, $stateParams, Se
     function generateResource(selected) {
     	VMService.SetNewGenerate(selected).then(function(result) {
     		if(result.data) {
+                vm.loading = false;
     			$rootScope.$broadcast('notice', 'success');
     		}
     	})

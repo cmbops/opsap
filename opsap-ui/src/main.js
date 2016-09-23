@@ -6,6 +6,7 @@
 require('./assets/css/bootstrap.min.css')
 require('./assets/css/material-kit.css')
 require('./assets/css/style.css')
+require('./assets/css/loading.css')
 require('./assets/css/rzslider.min.css')
 require('./assets/css/font-awesome.min.css')
 require('./assets/css/animate.css')
