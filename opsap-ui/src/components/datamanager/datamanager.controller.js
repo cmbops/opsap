@@ -10,6 +10,7 @@ const DatamanagerController = function($scope, $rootScope,  $stateParams, $state
   vm.files = [{name:'opics', desc:'opics文件'}, {name:'dzda', desc:'电子档案'}];
   
   vm.selectForm = {};
+  vm.startdate = new Date();
   vm.enddate = new Date();
   vm.selectForm.filename = vm.files[0].name;
   vm.selectForm.filestatus = 'exits';
@@ -61,6 +62,7 @@ const DatamanagerController = function($scope, $rootScope,  $stateParams, $state
   function disabled(data) {
     var date = data.date,
       mode = data.mode;
+      if($scope.popup2.opened) return mode === 'day' && (date.valueOf() > new Date().valueOf()) || (date.valueOf() < vm.startdate.valueOf());
     return mode === 'day' && (date.valueOf() > new Date().valueOf());
   }
 

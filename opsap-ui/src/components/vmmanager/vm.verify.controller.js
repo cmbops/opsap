@@ -13,11 +13,6 @@ const VmVerifyController = function($scope, $rootScope, $uibModal, $log, $transc
     vm.currentPage = 1;
 	vm.open = open;
 	vm.turnback = turnback; 
-	  $scope.dynamicPopover = {
-    content: 'Hello, World!',
-    templateUrl: './modal/vm.popoverTemplate.html',
-    title: 'Title'
-  };
 	vm.pageChanged = function() {
     $log.log('Page changed to: ' + $scope.currentPage);
   };

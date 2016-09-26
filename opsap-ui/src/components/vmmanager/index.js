@@ -12,4 +12,5 @@ module.exports = angular.module('opsap.vmmanager', ['settingService', 'vmService
                    .controller('VerifyModalController', require('./vm.verifymodal.controller'))
                    .controller('TurnbackController', require('./vm.verifyturnback.controller'))
                    .controller('VmManageController', require('./vm.manage.controller'))
-                   .directive('verifyTable', require('../directives/tablerender.directive'));
+                   .directive('verifyTable', require('../directives/tablerender.directive'))
+                   .directive('popover', require('../directives/popover.directive'));

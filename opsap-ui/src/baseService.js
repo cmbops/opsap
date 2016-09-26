@@ -69,7 +69,8 @@ baseservice.factory('SelectService', ['$rootScope', function($rootScope){
 		var action = (checkbox.checked ? 'add' : 'remove');
 		for(let i = 0; i < group.length; i++) {
 			let entity = group[i];
-			updateSelected(action, entity.id, selected);
+			var process = entity.process || 0;
+			if(process===0)updateSelected(action, entity.id, selected);
 		}
 	}
 }])

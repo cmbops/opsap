@@ -521,6 +521,14 @@ fieldset[disabled] .btn-success.active {
 }
 .type.active{
   padding-bottom: 8px;
+  border-bottom-color: #ffc;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+.type.active::before{
+  content: '▲';
+  position: relative;
+  display: inline-block;
 }
 .btn-info.disabled,
 .btn-info.disabled:hover,

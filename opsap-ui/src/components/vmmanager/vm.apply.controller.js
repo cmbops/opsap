@@ -14,7 +14,6 @@ const VmApllyController = function($scope, $rootScope, $state, OptionService) {
 	vm.OsLabels = [];
 	vm.selectEnvtype = selectEnvtype;
 	vm.selectOstype =  selectOstype;
-	vm.saveApply = saveApply;
 	//vm.softwares = ['WAS 7', 'WAS 8', 'ORACLE 11', 'TOMCAT', 'NGINX'];
 	vm.softwares = {WAS7: 10, WAS8: 15, ORACLE: 15, TOMCAT: 10, NGINX: 10}
 	vm.changeVolume = changeVolume;
