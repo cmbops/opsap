@@ -15,8 +15,6 @@ var config = {
    filename: '[name].bundle.js'
   },
   module: {
-  	//开发减少编译时间
-  	noParse: [/(jquery)/],
   	loaders: [
   	{
   	  test: /\.html$/,
@@ -87,8 +85,14 @@ if(env === 'product') {
     	}
     }),
     new webpack.optimize.OccurrenceOrderPlugin()];
+  var jqueryExpose = [{
+       test: require.resolve('jquery'),
+       loader: 'expose?$!expose?jQuery'
+     }];
+  config.module.concat(jqueryExpose);
   config.plugins.concat(minify);
 } else {
+  config.noParse = [/(jquery)/];
   config.devtool = "eval-source-map";
 }
 

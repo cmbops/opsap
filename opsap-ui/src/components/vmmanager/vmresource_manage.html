@@ -47,7 +47,7 @@
                                                 <td class="text-center">{{list.loc_storage_name}}</td>
                                                 <td class="text-center" id="{{list.id}}process">{{list.process}}</td>
                                                 <td class="text-center" id="{{list}}gen_log">{{list.gen_log}}</td>
-                                                <td class="text-center" id="{{list.id}}loading">
+                                                <td class="text-center" id="{{list.id}}loading" ng-show="list.process === 0">
                                                     <input type="checkbox" 
                                                            name="checkbox" 
                                                            value="{{list.id}}"
@@ -55,9 +55,11 @@
                                                            ng-checked="vmmanage.isSelected(list.id, vmmanage.selected)" 
                                                            ng-click="vmmanage.updateSelection($event, list.id, vmmanage.selected)">
                                                 </td>
+                                                <td class="text-center" ng-show="list.process !== 0"><div class="gen-loading"></div></td>
                                                 <td class="text-center">
                                                     <popover contents="list.ipaddress"></popover>
                                                 </td>
+                                                
                                             </tr>
                                         </tbody>
                                     </table>

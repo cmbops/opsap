@@ -1,5 +1,5 @@
 
-const VmManageController = function($scope, $rootScope, $state, $stateParams, $sce, SelectService, VMService) {
+const VmManageController = function($scope, $rootScope, $state, $stateParams, $sce, $interval, SelectService, VMService) {
 	var vm = this;
 	vm.resourcelist = [{id:1, appro_os_type:'WIN', ipaddress:'192.168.7.2', loc_cluster_name: 'hGff5d', loc_storage_name: 'Yifdf', process:0, gen_log: 'success'},
 	               {id:2, appro_os_type:'LUX', ipaddress:'192.168.7.2', loc_cluster_name: 'hGff5d', loc_storage_name: 'Yifdf', process:80, gen_log: 'success'},
@@ -26,6 +26,6 @@ const VmManageController = function($scope, $rootScope, $state, $stateParams, $s
     }
 }
 
-VmManageController.$inject = ['$scope', '$rootScope', '$state', '$stateParams', '$sce', 'SelectService', 'VMService'];
+VmManageController.$inject = ['$scope', '$rootScope', '$state', '$stateParams', '$sce', '$interval', 'SelectService', 'VMService'];
 
 module.exports = VmManageController;

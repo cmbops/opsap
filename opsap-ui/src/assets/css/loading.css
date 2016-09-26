@@ -35,6 +35,12 @@
   -webkit-animation-delay: -0.8s;
   animation-delay: -0.8s;
 }
+
+.gen-loading {
+    background-image: url("../img/loading.gif");
+    width: 30px;
+    height:30px;
+}
  
 @-webkit-keyframes stretchdelay {
   0%, 40%, 100% { -webkit-transform: scaleY(0.4) } 

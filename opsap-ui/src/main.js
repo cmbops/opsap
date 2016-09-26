@@ -11,6 +11,8 @@ require('./assets/css/rzslider.min.css')
 require('./assets/css/font-awesome.min.css')
 require('./assets/css/animate.css')
 
+//js文件依赖
+
 //angular依赖
 require('angular-ui-router');
 require('angular-ui-bootstrap');
