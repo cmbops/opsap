@@ -45,6 +45,10 @@ var config = {
        query: {
        	   presets:['es2015','stage-2']
        }
+     },
+     {
+       test: require.resolve('jquery'),
+       loader: 'expose?$!expose?jQuery'
      }
      ]
   },
@@ -70,7 +74,7 @@ var config = {
   resolve: {
   	extensions: ['', '.js'], 
   	alias: {
-  	  'srcUrl': path.resolve(__dirname, './src'),
+  	  jquery: path.resolve(__dirname, './src/assets/js/jquery.min.js'),
   	  'componentsUrl': path.resolve(__dirname, './src/components'),
   	  'bootstrap': 'bootstrap/dist/css/bootstrap.min.css'
   	}
@@ -89,10 +93,9 @@ if(env === 'product') {
        test: require.resolve('jquery'),
        loader: 'expose?$!expose?jQuery'
      }];
-  config.module.concat(jqueryExpose);
+  config.module.loaders.concat(jqueryExpose);
   config.plugins.concat(minify);
 } else {
-  config.noParse = [/(jquery)/];
   config.devtool = "eval-source-map";
 }
 

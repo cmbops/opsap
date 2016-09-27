@@ -195,7 +195,7 @@ const echartDirective = function(){
             }
         ]
     };
-		  myChart.setOption(dataOption);
+		  myChart.setOption(dataOption, true);
 		   myChart.dispatchAction({
         type: 'brush',
         areas: [

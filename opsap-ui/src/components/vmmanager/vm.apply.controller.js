@@ -21,7 +21,8 @@ const VmApllyController = function($scope, $rootScope, $state, OptionService) {
 	vm.volumeslider = {
 		options: {
 			floor: 0,
-			ceil: 100
+			ceil: 100,
+			minLimit: 0
 		}
 	}
 	//vm.submitForm = submitForm;
@@ -29,7 +30,7 @@ const VmApllyController = function($scope, $rootScope, $state, OptionService) {
 	activeOsOption();
 
     $scope.$watch('vmapply.basevolume', function(ov, nv) {
-    	vm.volumeslider.options.floor = vm.basevolume;
+    	vm.volumeslider.options.minLimit = vm.basevolume;
     	vm.ApplyForm.dataVolume = vm.basevolume;
     })
 	$scope.$watch('vmapply.ApplyForm.fun_type', function(newVal,oldVal) {

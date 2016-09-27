@@ -12,7 +12,11 @@ require('./assets/css/font-awesome.min.css')
 require('./assets/css/animate.css')
 
 //js文件依赖
-
+require('./assets/js/rzslider.min.js')
+require('./assets/js/bootstrap.min.js')
+require('./assets/js/material.min.js')
+var $ = require('jquery');
+require('./assets/js/material-kit.js')
 //angular依赖
 require('angular-ui-router');
 require('angular-ui-bootstrap');
