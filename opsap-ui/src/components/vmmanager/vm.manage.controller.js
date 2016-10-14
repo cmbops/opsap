@@ -9,7 +9,7 @@ const VmManageController = function($scope, $rootScope, $state, $stateParams, $s
     vm.setSelectAll = SelectService.setSelectAll;
     vm.updateSelection = SelectService.updateSelection;
     vm.generateResource = generateResource;
-    vm.loading = true;
+    vm.loading = false;
 	vm.dynamicPopover = {
     content: 'Hello, World!',
     title: 'Title'
@@ -17,12 +17,7 @@ const VmManageController = function($scope, $rootScope, $state, $stateParams, $s
     vm.dynamicHtml = $sce.trustAsHtml(require('./modal/vm.popoverTemplate.html'));
 
     function generateResource(selected) {
-    	VMService.SetNewGenerate(selected).then(function(result) {
-    		if(result.data) {
-                vm.loading = false;
-    			$rootScope.$broadcast('notice', 'success');
-    		}
-    	})
+            vm.resourcelist.push({id:4, appro_os_type:'SUSE', ipaddress:'192.168.7.2', loc_cluster_name: 'hGff5d', loc_storage_name: 'Yifdf', process:100, gen_log: 'success'});
     }
 }
 
